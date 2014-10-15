@@ -1,5 +1,11 @@
+# Directory files
+.directory
+
+# Backup files
+*~
+
 # Virtual environment
-virtenv/
+selpenv/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
