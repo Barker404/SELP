@@ -1,0 +1,33 @@
+\documentclass{article}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+
+\begin{document}
+\author{Lewis Barker s1236818}
+\title{Software Engineering Large Practical - Proposal}
+\date{October 2014}
+\maketitle
+
+\section{Introduction}
+For my Software Engineering Large Practical project, I intend to create a simple web turn-based game. Players will battle each other in a style similar to turn-based RPG games, and be ranked on their success. The game's theme will be Mechs (large piloted humanoid machines - such as those in Gundam or Pacific Rim), and so players will battle each user using their own mechs.
+
+\section{Software Implementation Details}
+I have chosen to write the back end of my website using Python, as it's a language that I have used before, both in university assignments and in my own projects, and it also has some good options available for web frameworks. I will be using Django as my framework, as I have used it a small amount before, so I have a rough understanding of how it works. I found the included admin site and lightweight development server made basic testing of what I create much easier and save having to use other technologies for this. I also like how the template system allows for what is essentially embedded python in the HTML files, and makes it easy to keep the whole website looking the same thanks to the ability to inherit base templates. Additionally, I know some people who are well experienced with using Django, so I can get resources such as books from them. However I myself am still inexperienced with web design work - as a result I have specified below both my core ideas and some ideas that I would like to implement, but don't know if I will have time.
+
+\section{Matchups}
+Players will battle against one another, either randomly or against a particular player of their choice. Due to the possibility of players creating multiple accounts, battles against specific other players should not contribute to their ranking.
+Depending on how complex it turns out to be, and on how much time I have towards the end, it would be nice to implement a system where the matchmaking prefers to choose players of similar rank to battle each other.
+It may also be possible to add the option of playing against AI opponents - these would probably be very simple AI however, due to my inexperience in this aspect and other features using up time.
+
+\section{Battle System}
+The battles themselves will be something of a cross between standard RPG-style turn-based battle and rock-paper-scissors. While players will choose their actions one at a time out of a number of moves available to them, both players will act at the same time, with the other players actions affecting the success of your own action.
+To expand on this mechanism, a sense of "distance" between the players' characters may be introduced - for example some attacks would only work when the characters are close together, whereas if long-range attacks are used in close range they may do less damage or be interrupted by a close-range attack from the opponent. In this sense a level of predicting the opponents actions will be introduced, much like in rock-paper-scissors.
+
+\section{Rankings} 
+As specified in the assignment requirements, the website will have a ranking system. This will be based on the user's success in playing battles against randomly chosen opponents. Initially this will simply based on win/loss ratio - although perhaps with a system of weighting so that those who have played more matches rank higher than those who have played less but won the same ratio.
+These rankings will be updated after every battle, and could be split into categories such as "all time", "weekly" and "daily".
+If I am able to implement this without too much difficulty, I would like to introduce a system with a deeper level of player rewards. In this case, players would be given a level as well as a ranking. They would get points for winning battles, with more points being gained from battling higher level opponents, and when enough points are accumulated they can go up a level. The amount of points required to level up would increase with the player's level. This might also introduce the possibility of using the points earned to buy upgrades to the player's mech to make it stronger or have a different appearance - the points spent on this would still be counted for levelling-up, just no longer available to spend. Alternatively, these upgrades could simply be awarded for levelling up. My ideal final goal would be a system where mechs can be constructed from individual parts (e.g. head, body, arms) earned in this manner - but this depends heavily on how long other parts take to make and how complex they end up being.
+
+
+\end{document}
