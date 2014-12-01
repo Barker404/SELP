@@ -1,3 +1,6 @@
+# Database files
+*.sqlite3
+
 # Directory files
 .directory
 
