@@ -8,9 +8,9 @@
     {% if first_mech_list %}
       <b>Some mechs:</b>
       <ul>
-      {% for mech in first_mech_list %}
-	<li><a href="/mechs/detail/{{ mech.id }}">{{ mech.name }}</a></li>
-      {% endfor %}
+        {% for mech in first_mech_list %}
+          <li><a href="/mechs/detail/{{ mech.id }}">{{ mech.name }}</a></li>
+        {% endfor %}
       </ul>
     {% else %}
       <p>All the mechs are dead</p>
