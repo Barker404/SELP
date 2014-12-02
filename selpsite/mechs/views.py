@@ -1,14 +1,18 @@
 from django.http import HttpResponse
-from django.template import RequestContext, loader
 from django.shortcuts import render
+from django.views import generic
 
 from mechs.models import StdMech
 
-def index(request):
-  first_mech_list = StdMech.objects.order_by('name')[:5]
-  #template = loader.get_template('mechs/index.html')
-  context = {'first_mech_list': first_mech_list}
-  return render(request, 'mechs/index.html', context)
+def index(generic.ListView):
+  template_name = 'mechs.index/html'
+  context_object_name = 'first_mech_list'
 
-def detail(request, mech_id):
-  return HttpResponse("You're looking at mech %s." % mech_id)
+  def get_queryset(self):
+    """Return the first five mechs."""
+    return StdMech.objects.order_by('name')[:5]
+
+def detail(generic.DetailView):
+    model = StdMech
+    template_name = 'mechs/detail.html'
+    # TODO: create detail.html
