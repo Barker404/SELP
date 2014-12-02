@@ -4,7 +4,7 @@ from django.views import generic
 
 from mechs.models import StdMech
 
-class index(generic.ListView):
+class IndexView(generic.ListView):
     template_name = 'mechs/index.html'
     context_object_name = 'first_mech_list'
 
@@ -12,7 +12,7 @@ class index(generic.ListView):
         """Return the first five mechs."""
         return StdMech.objects.order_by('name')[:5]
 
-class detail(generic.DetailView):
+class DetailView(generic.DetailView):
     model = StdMech
     template_name = 'mechs/detail.html'
     
