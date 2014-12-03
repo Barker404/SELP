@@ -5,10 +5,10 @@
     <style></style>
   </head>
   <body>
-    {% if first_mech_list %}
+    {% if object_list %}
       <b>Some mechs:</b>
       <ul>
-        {% for mech in first_mech_list %}
+        {% for mech in object_list %}
           <li><a href="/mechs/detail/{{ mech.id }}">{{ mech.name }}</a></li>
         {% endfor %}
       </ul>
