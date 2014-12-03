@@ -85,6 +85,6 @@ STATIC_URL = '/static/'
 
 # URLs
 
-LOGIN_REDIRECT_URL = '/user/account/'
-LOGIN_URL = '/user/login/'
-LOGOUT_URL = '/user/logout/'
+LOGIN_REDIRECT_URL = '/users/account/'
+LOGIN_URL = '/users/login/'
+LOGOUT_URL = '/users/logout/'
