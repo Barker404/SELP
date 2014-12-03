@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 
 from django.contrib.auth import authenticate, login, logout
@@ -10,6 +10,6 @@ from django.contrib.auth import authenticate, login, logout
 def accountView(request):
     # Redirect to login page if user is not logged in
     if not request.user.is_authenticated():
-        return redirect('/login/?next=%s' % request.path)
+        return redirect('/user/login/?next=%s' % request.path)
     else:
         return render(request, 'users/account.html', { 'user': request.user })
