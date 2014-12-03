@@ -11,3 +11,9 @@ def logoutView(request):
     logout(request)
     return HttpResponse("Logged out successfully")
 
+def accountView(request):
+    # Redirect to login page if user is not logged in
+    if not request.user.is_authenticated():
+        return redirect('/login/?next=%s' % request.path)
+    else:
+        return render(request, 'users/account.html', { 'user': request.user })
