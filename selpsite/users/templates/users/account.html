@@ -5,11 +5,11 @@
   <body>
     <b> {{ user }} </b>
     <!-- Display information on special permissions -->
-    {% if user.is_staff %}
-      <i><font color="blue"> - Staff</font></i>
-    {% endif %}
     {% if user.is_superuser %}
       <i><font color="green"> - SuperUser</font></i>
+    {% endif %}
+    {% if user.is_staff %}
+      <i><font color="blue"> - Staff</font></i>
     {% endif %}
     {% if not user.is_active %}
       <i><font color="red"> - Disabled</font></i>
