@@ -1,4 +1,4 @@
- #H1 Software Engineering Large Practical
+ # Software Engineering Large Practical
  
  A simple website made for my undergraduate 3rd year semester 1 course __SELP__, written using Django.
  
