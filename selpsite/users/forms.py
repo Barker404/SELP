@@ -1,3 +1,8 @@
 from django import forms
+from django.forms import ModelForm
+from users.models import UserProfile
 
-# Create forms here
+class UserProfileForm(ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['description']

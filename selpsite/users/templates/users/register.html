@@ -3,8 +3,11 @@
     <title>Register for an account</title>
   </head>
   <body>
-    
-      <!-- django forms will go here -->
-
+    <form action="{% url 'register' %}" method="post">
+      {% csrf_token %}
+      {{ userForm.as_p }} <br/>
+      {{ profileForm.as_p }}
+      <input type="submit" value="Sign Up" />
+    </form>
   </body>
 </html>
