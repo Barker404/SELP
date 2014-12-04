@@ -4,8 +4,14 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth import authenticate, login, logout
 
-# View for creating account
-# - Confirmation screen?
+def registerView(request):
+    if request.method == 'POST':
+        # Post the data
+        return
+    else:
+        # Show registration forms
+        # Standard django user form, plus model form for UserProfile
+        return
 
 def accountView(request):
     # Redirect to login page if user is not logged in
