@@ -12,4 +12,4 @@ def accountView(request):
     if not request.user.is_authenticated():
         return redirect('/users/login/?next=%s' % request.path)
     else:
-        return render(request, 'users/account.html', { 'user': request.user })
+        return render(request, 'users/account.html')
