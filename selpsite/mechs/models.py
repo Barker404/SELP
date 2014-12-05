@@ -13,4 +13,3 @@ class StdMech(models.Model):
     attackA = models.ForeignKey(Attack, related_name='attackA')
     attackB = models.ForeignKey(Attack, related_name='attackB', blank=True)
     attackC = models.ForeignKey(Attack, related_name='attackC', blank=True)
-
