@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>{% block title %}SELP Site{% endblock %}</title>
+  </head>
+
+  <body>
+    <div id="navigation">
+        {% block navigation %}
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="{% url 'index' %}">Mech List</a></li>
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'account' %}">{{ user.username }}</a></li>
+              <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+              <li><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
+
+        </ul>
+        {% endblock %}
+    </div>
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>

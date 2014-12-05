@@ -1,19 +1,18 @@
-<html>
-  <head>
-    <title>Index of mechs</title>
-    <meta content="">
-    <style></style>
-  </head>
-  <body>
-    {% if object_list %}
-      <b>Some mechs:</b>
-      <ul>
-        {% for mech in object_list %}
-          <li><a href="/mechs/detail/{{ mech.id }}">{{ mech.name }}</a></li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>All the mechs are dead</p>
-    {% endif %}
-  </body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Index of mechs{% endblock %}
+
+{% block content %}
+
+  {% if object_list %}
+    <b>Some mechs:</b>
+    <ul>
+      {% for mech in object_list %}
+        <li><a href="{% url 'detail' mech.id %}">{{ mech.name }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>All the mechs are dead</p>
+  {% endif %}
+
+{% endblock %}
