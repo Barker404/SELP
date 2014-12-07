@@ -18,8 +18,7 @@ def registerView(request):
             savedProfile.user = savedUser
             savedProfile.save()
             savedUser.save()
-
-            return HttpResponse('Nice one. Try logging in.')
+            return redirect('/users/welcome/')
     else:
         # GET (or other method): create blank forms
         userForm = UserCreationForm(prefix="userForm");
@@ -35,3 +34,6 @@ def accountView(request):
         return redirect('/users/login/?next=%s' % request.path)
     else:
         return render(request, 'users/account.html')
+
+def welcomeView(request):
+    return render(request, 'users/welcome.html')
