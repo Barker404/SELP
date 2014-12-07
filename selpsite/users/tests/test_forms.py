@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.core.urlresolvers import reverse
 
 from django.contrib.auth.models import User
 from users.models import UserProfile
@@ -16,12 +17,12 @@ class UsersFormsTestCase(TestCase):
         newDescription = 'this is a test'
 
         # Check we can create a user properly
-        response = self.client.post('/users/register/', {
+        response = self.client.post(reverse('register'), {
             'userForm-username' : newUsername, 
             'userForm-password1' : newPassword, 
             'userForm-password2' : newPassword, 
             'profileForm-description' : newDescription})
-        self.assertRedirects(response, '/users/welcome/', 
+        self.assertRedirects(response, reverse('welcome'), 
             status_code=302, target_status_code=200)
 
         # Check we can then log in
@@ -40,14 +41,14 @@ class UsersFormsTestCase(TestCase):
         noProfiles = UserProfile.objects.count()
 
         # Empty post
-        response = self.client.post('/users/register/')
+        response = self.client.post(reverse('register'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(User.objects.count(), noUsers)
         self.assertEqual(UserProfile.objects.count(), noProfiles)
 
         # Existing username
         self.assertTrue(User.objects.filter(username='user1').exists())
-        response = self.client.post('/users/register/', {
+        response = self.client.post(reverse('register'), {
             'userForm-username' : 'user1', 
             'userForm-password1' : 'password', 
             'userForm-password2' : 'password', 
@@ -58,7 +59,7 @@ class UsersFormsTestCase(TestCase):
 
         # Different passwords
         self.assertTrue(User.objects.filter(username='user1').exists())
-        response = self.client.post('/users/register/', {
+        response = self.client.post(reverse('register'), {
             'userForm-username' : 'newUser', 
             'userForm-password1' : 'passworda', 
             'userForm-password2' : 'passwordb', 

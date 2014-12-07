@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -18,7 +19,7 @@ def registerView(request):
             savedProfile.user = savedUser
             savedProfile.save()
             savedUser.save()
-            return redirect('/users/welcome/')
+            return redirect(reverse('welcome'))
     else:
         # GET (or other method): create blank forms
         userForm = UserCreationForm(prefix="userForm");
