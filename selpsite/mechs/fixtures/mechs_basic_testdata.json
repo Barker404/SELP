@@ -1,0 +1,70 @@
+[
+{
+    "pk": 1, 
+    "model": "mechs.attack", 
+    "fields": {
+        "name": "Beam Rifle", 
+        "damage": 60
+    }
+},
+{
+    "pk": 2, 
+    "model": "mechs.attack", 
+    "fields": {
+        "name": "Beam Saber", 
+        "damage": 70
+    }
+},
+{
+    "pk": 3, 
+    "model": "mechs.attack", 
+    "fields": {
+        "name": "Vulcans", 
+        "damage": 30
+    }
+},
+{
+    "pk": 4, 
+    "model": "mechs.attack", 
+    "fields": {
+        "name": "Heat Hawk", 
+        "damage": 50
+    }
+},
+{
+    "pk": 5, 
+    "model": "mechs.attack", 
+    "fields": {
+        "name": "Machine Gun", 
+        "damage": 40
+    }
+},
+{
+    "pk": 6, 
+    "model": "mechs.attack", 
+    "fields": {
+        "name": "Grenades", 
+        "damage": 20
+    }
+},
+{
+    "pk": 1, 
+    "model": "mechs.stdmech", 
+    "fields": {
+        "attackC": 3, 
+        "attackB": 1, 
+        "attackA": 2, 
+        "name": "RX-78"
+    }
+},
+{
+    "pk": 2, 
+    "model": "mechs.stdmech", 
+    "fields": {
+        "attackC": 6, 
+        "attackB": 5, 
+        "attackA": 4, 
+        "name": "Zaku II"
+    }
+}
+]

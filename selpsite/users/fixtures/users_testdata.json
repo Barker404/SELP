@@ -1,0 +1,34 @@
+[
+{
+    "pk": 1, 
+    "model": "users.userprofile", 
+    "fields": {
+        "user": 1, 
+        "description": "lewis's profile"
+    }
+},
+{
+    "pk": 2, 
+    "model": "users.userprofile", 
+    "fields": {
+        "user": 2, 
+        "description": "user1's profile"
+    }
+},
+{
+    "pk": 3, 
+    "model": "users.userprofile", 
+    "fields": {
+        "user": 3, 
+        "description": "staff's profile"
+    }
+},
+{
+    "pk": 4, 
+    "model": "users.userprofile", 
+    "fields": {
+        "user": 4, 
+        "description": "disabled's profile"
+    }
+}
+]
