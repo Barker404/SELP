@@ -39,3 +39,7 @@ class UsersViewsTestCase(TestCase):
     def test_logout_view(self):
         response = self.client.get('/users/logout/')
         self.assertEqual(response.status_code, 200)
+
+    def test_welcome_view(self):
+        response = self.client.get('/users/welcome/')
+        self.assertEqual(response.status_code, 200)
