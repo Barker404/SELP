@@ -3,6 +3,7 @@
 <html>
   <head>
     <title>{% block title %}SELP Site{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href={% static 'css/base.css' %} />
   </head>
 
   <body>
@@ -23,7 +24,7 @@
         </ul>
         {% endblock %}
     </div>
-
+    <br/>
     <div id="content">
         {% block content %}{% endblock %}
     </div>
