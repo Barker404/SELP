@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from users.models import UserProfile
 
+from users.views import rankedUsers
+
 class UsersViewsTestCase(TestCase):
     fixtures = ['auth_user_testdata', 'users_testdata']
 
@@ -101,3 +103,33 @@ class UsersViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(User.objects.count(), noUsers)
         self.assertEqual(UserProfile.objects.count(), noProfiles)
+
+    def test_rankings_view(self):
+        lewis = User.objects.get(username='lewis')
+        user1 = User.objects.get(username='user1')
+        response = self.client.get(reverse('rankings'))
+        self.assertTrue('ranked_users' in response.context)
+        self.assertTrue(lewis in response.context['ranked_users'])
+        self.assertTrue(user1 in response.context['ranked_users'])
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_rankings(self):
+        lewis = User.objects.get(username='lewis')
+        user1 = User.objects.get(username='user1')
+        lewis.profile.addWin()
+        self.assertEqual(lewis.profile.score, 1)
+        self.assertEqual(user1.profile.score, 0)
+
+        rankings = rankedUsers()
+        self.assertEqual(rankings[0], lewis)
+
+        user1.profile.addWin()
+        user1.profile.addWin()
+        self.assertEqual(lewis.profile.score, 1)
+        self.assertEqual(user1.profile.score, 2)
+        rankings = rankedUsers()
+        # print(rankings)
+        # self.assertEqual(rankings[0], user1)
+        # self.assertEqual(rankings[1], lewis)
+
+
