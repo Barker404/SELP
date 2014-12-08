@@ -1,9 +1,12 @@
+{% load staticfiles %}
+
 <html>
   <head>
     <title>{% block title %}SELP Site{% endblock %}</title>
   </head>
 
   <body>
+    <img src="{% static 'img/logo.png' %}" alt="logo">
     <div id="navigation">
         {% block navigation %}
         <ul>
