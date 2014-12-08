@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}User Rankings{% endblock %}
+
+{% block content %}
+
+  {% if ranked_users %}
+    <b>Rankings:</b>
+    <ul>
+      {% for user in ranked_users %}
+        <li><b> {{ forloop.counter }} </b> PUT A LINK HERE: {{ user.username }} - Score: {{ user.profile.score }} </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>All the users are dead</p>
+  {% endif %}
+
+{% endblock %}

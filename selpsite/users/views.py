@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.views import generic
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -38,3 +39,19 @@ def accountView(request):
 
 def welcomeView(request):
     return render(request, 'users/welcome.html')
+
+
+class RankingView(generic.ListView):
+    model = User
+    template_name = 'users/rankings.html'
+    context_object_name = 'ranked_users'
+
+    def get_queryset(self):
+        """Return the user in order of ranking."""
+        return rankedUsers()
+
+def rankedUsers():
+    unsortedResults = User.objects.all()
+    sortedResults = sorted(unsortedResults, key=lambda t: t.profile.score())
+    return sortedResults
+
