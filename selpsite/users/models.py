@@ -8,4 +8,6 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name="profile")
     # Additional attributes
     description = models.TextField(blank=True)
+    wins = models.IntegerField(default=0)
+    losses = models.IntegerField(default=0)
     

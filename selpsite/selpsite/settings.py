@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'mechs',
     'users',
     'django_nose',
+    'south',
 )
 
 TEMPLATE_DIRS = (
