@@ -11,3 +11,5 @@ class UserProfile(models.Model):
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     
+    def score(self):
+        return self.wins/self.losses
