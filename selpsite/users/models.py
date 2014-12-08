@@ -10,10 +10,19 @@ class UserProfile(models.Model):
     description = models.TextField(blank=True)
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
-    
+    score = models.FloatField(default = 0)
+
     # This defines how users are ranked
-    def score(self):
+    def calculateScore(self):
         if (self.losses == 0):
             return self.wins
         else:
             return self.wins/self.losses
+
+    def addWin(self):
+        self.wins = self.wins + 1
+        self.score = self.calculateScore()
+
+    def addLoss(self):
+        self.losses = self.losses + 1
+        self.score = self.calculateScore()

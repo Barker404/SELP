@@ -13,20 +13,20 @@ class UserModelsTestCase(TestCase):
     def testScore(self):
         testUser = User.objects.create_user(username='test1', password='test1Pass')
         profile = UserProfile.objects.create(user=testUser, description='') 
-        self.assertEquals(profile.score(), 0)
+        self.assertEquals(profile.calculateScore(), 0)
 
         testUser = User.objects.create_user(username='test2', password='test2Pass')
         profile = UserProfile.objects.create(user=testUser, description='', wins=5) 
-        self.assertEquals(profile.score(), 5)
+        self.assertEquals(profile.calculateScore(), 5)
         
         testUser = User.objects.create_user(username='test3', password='test3Pass')
         profile = UserProfile.objects.create(user=testUser, description='', losses=5) 
-        self.assertEquals(profile.score(), 0)
+        self.assertEquals(profile.calculateScore(), 0)
 
         testUser = User.objects.create_user(username='test4', password='test4Pass')
         profile = UserProfile.objects.create(user=testUser, description='', wins=10000, losses=1) 
-        self.assertEquals(profile.score(), 10000)
+        self.assertEquals(profile.calculateScore(), 10000)
 
         testUser = User.objects.create_user(username='test5', password='test5Pass')
         profile = UserProfile.objects.create(user=testUser, description='', wins=10, losses=100) 
-        self.assertEquals(profile.score(), 10/100)
+        self.assertEquals(profile.calculateScore(), 10/100)
