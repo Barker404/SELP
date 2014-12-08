@@ -51,10 +51,6 @@ class RankingView(generic.ListView):
         return rankedUsers()
 
 def rankedUsers():
-    # This gets the list from the database then sorts it in python
-    # Doesn't scale well, less efficient than sorting in the database
-    # Alternative would require custom SQL however
-    unsortedResults = User.objects.all()
-    sortedResults = sorted(unsortedResults, key=lambda t: t.profile.score())
-    return sortedResults
-
+    # Can change this if we want to sort by something other than score
+    return User.objects.order_by('profile__score')
+    
