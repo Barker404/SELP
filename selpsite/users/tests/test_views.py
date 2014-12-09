@@ -20,33 +20,6 @@ class UsersViewsTestCase(TestCase):
         self.assertTrue('userForm' in response.context)
         self.assertTrue('profileForm' in response.context)
 
-    def test_account_unauth(self):
-        # Check that account reiderects unauthorised clients
-        self.client.logout()
-        response = self.client.get(reverse('account'))
-        self.assertRedirects(response, '/users/login/?next=/users/account/', 
-            status_code=302, target_status_code=200)
-
-    def test_account_auth(self):
-        # Check account when logged in
-        loggedIn = self.client.login(username='user1', password='user1Pass')
-        self.assertTrue(loggedIn)
-        self.assertIn('_auth_user_id', self.client.session)
-        response = self.client.get(reverse('account'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_login_view(self):
-        response = self.client.get(reverse('login'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_logout_view(self):
-        response = self.client.get(reverse('logout'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_welcome_view(self):
-        response = self.client.get(reverse('welcome'))
-        self.assertEqual(response.status_code, 200)
-
     def test_good_register(self):
         newUsername ='user2'
         newPassword = 'user2Pass'
@@ -103,6 +76,33 @@ class UsersViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(User.objects.count(), noUsers)
         self.assertEqual(UserProfile.objects.count(), noProfiles)
+
+    def test_welcome_view(self):
+        response = self.client.get(reverse('welcome'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_login_view(self):
+        response = self.client.get(reverse('login'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_logout_view(self):
+        response = self.client.get(reverse('logout'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_account_auth(self):
+        # Check account when logged in
+        loggedIn = self.client.login(username='user1', password='user1Pass')
+        self.assertTrue(loggedIn)
+        self.assertIn('_auth_user_id', self.client.session)
+        response = self.client.get(reverse('account'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_account_unauth(self):
+        # Check that account reiderects unauthorised clients
+        self.client.logout()
+        response = self.client.get(reverse('account'))
+        self.assertRedirects(response, '/users/login/?next=/users/account/', 
+            status_code=302, target_status_code=200)
 
     def test_rankings_view(self):
         lewis = User.objects.get(username='lewis')
