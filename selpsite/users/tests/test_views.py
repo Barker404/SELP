@@ -104,6 +104,24 @@ class UsersViewsTestCase(TestCase):
         self.assertRedirects(response, '/users/login/?next=/users/account/', 
             status_code=302, target_status_code=200)
 
+    def test_user_detail_view(self):
+        lewis = User.objects.get(username='lewis')
+        user1 = User.objects.get(username='user1')
+        response = self.client.get(reverse('userDetail', args=('lewis',)))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('detailUser' in response.context)
+        self.assertEqual(response.context['detailUser'], lewis)
+
+        response = self.client.get(reverse('userDetail', args=('user1',)))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('detailUser' in response.context)
+        self.assertEqual(response.context['detailUser'], user1)
+
+        response = self.client.get(reverse('userDetail', args=('not_a_user',)))
+        self.assertEqual(response.status_code, 404)
+
+
     def test_rankings_view(self):
         lewis = User.objects.get(username='lewis')
         user1 = User.objects.get(username='user1')
