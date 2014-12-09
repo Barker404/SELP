@@ -52,5 +52,5 @@ class RankingView(generic.ListView):
 
 def rankedUsers():
     # Can change this if we want to sort by something other than score
-    return User.objects.order_by('profile__score')
+    return User.objects.order_by('-profile__score')
     

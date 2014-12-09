@@ -117,6 +117,7 @@ class UsersViewsTestCase(TestCase):
         lewis = User.objects.get(username='lewis')
         user1 = User.objects.get(username='user1')
         lewis.profile.addWin()
+        lewis.profile.save()
         self.assertEqual(lewis.profile.score, 1)
         self.assertEqual(user1.profile.score, 0)
 
@@ -125,11 +126,12 @@ class UsersViewsTestCase(TestCase):
 
         user1.profile.addWin()
         user1.profile.addWin()
+        user1.profile.save()
         self.assertEqual(lewis.profile.score, 1)
         self.assertEqual(user1.profile.score, 2)
-        rankings = rankedUsers()
-        # print(rankings)
-        # self.assertEqual(rankings[0], user1)
-        # self.assertEqual(rankings[1], lewis)
+        newRankings = rankedUsers()
+        print(newRankings)
+        self.assertEqual(newRankings[0], user1)
+        self.assertEqual(newRankings[1], lewis)
 
 
