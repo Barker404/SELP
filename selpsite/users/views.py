@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
@@ -30,6 +30,7 @@ def registerView(request):
     return render(request, 'users/register.html', 
         {'userForm': userForm, 'profileForm' : profileForm})
 
+# View for the account of the currently logged in user
 def accountView(request):
     # Redirect to login page if user is not logged in
     if not request.user.is_authenticated():
@@ -40,6 +41,12 @@ def accountView(request):
 def welcomeView(request):
     return render(request, 'users/welcome.html')
 
+# View for the public account of a user
+def userDetailView(request, user_id):
+    user = get_object_or_404(User, username=user_id)
+
+    return render(request, 'users/detail.html', 
+        {'detailUser' : user})
 
 class RankingView(generic.ListView):
     model = User

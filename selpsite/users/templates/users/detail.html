@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}User details: {{ detailUser }}{% endblock %}
+
+{% block content %}
+  <div id="name">
+    <b> {{ detailUser }} </b>
+    <!-- Display information on special permissions -->
+    {% if detailUser.is_superuser %}
+      <i><font color="green"> - SuperUser</font></i>
+    {% endif %}
+    {% if detailUser.is_staff %}
+      <i><font color="blue"> - Staff</font></i>
+    {% endif %}
+    {% if not detailUser.is_active %}
+      <i><font color="red"> - Disabled</font></i>
+    {% endif %}
+  </div>
+
+  <div id="score">
+    <p> Score: {{ detailUser.profile.score }} 
+      ( {{ detailUser.profile.wins}} wins, {{ user.profile.losses}} losses) </p>
+  </div>
+
+  <div id="userInfo">
+    <b>User Info:</b> <br/>
+    {% if detailUser.first_name %}
+      First name: {{ detailUser.first_name }} <br/>
+    {% endif %}
+    {% if detailUser.last_name %}
+      Last name: {{ detailUser.last_name }} <br/>
+    {% endif %}
+    {% if detailUser.profile.description %}
+      Profile Description: <br/>
+      {{ detailUser.profile.description }}
+    {% endif %}
+  </div>
+
+{% endblock %}
