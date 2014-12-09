@@ -8,7 +8,9 @@
     <b>Rankings:</b>
     <ul>
       {% for user in ranked_users %}
-        <li><b> {{ forloop.counter }} </b> PUT A LINK HERE: {{ user.username }} - Score: {{ user.profile.score }} </li>
+        <li><b> {{ forloop.counter }} </b> 
+          <a href="{% url 'userDetail' user.username %}">{{ user.username }}</a>: 
+          - Score: {{ user.profile.score }} </li>
       {% endfor %}
     </ul>
   {% else %}
