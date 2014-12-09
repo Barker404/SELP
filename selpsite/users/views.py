@@ -52,6 +52,7 @@ class RankingView(generic.ListView):
     model = User
     template_name = 'users/rankings.html'
     context_object_name = 'ranked_users'
+    paginate_by = 10
 
     def get_queryset(self):
         """Return the user in order of ranking."""
