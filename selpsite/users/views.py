@@ -30,6 +30,9 @@ def registerView(request):
     return render(request, 'users/register.html', 
         {'userForm': userForm, 'profileForm' : profileForm})
 
+def welcomeView(request):
+    return render(request, 'users/welcome.html')
+
 # View for the account of the currently logged in user
 def accountView(request):
     # Redirect to login page if user is not logged in
@@ -37,9 +40,6 @@ def accountView(request):
         return redirect('/users/login/?next=%s' % request.path)
     else:
         return render(request, 'users/account.html')
-
-def welcomeView(request):
-    return render(request, 'users/welcome.html')
 
 # View for the public account of a user
 def userDetailView(request, user_id):
