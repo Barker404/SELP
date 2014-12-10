@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'home',
     'mechs',
     'users',
+    'battles',
     'django_nose',
     'south',
 )
