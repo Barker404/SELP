@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def startBattleView(request):
+    return render(request, 'battles/startBattle.html')
