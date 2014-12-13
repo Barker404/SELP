@@ -34,10 +34,12 @@ class Player(models.Model):
     # When both are not null, the turn can proceed
     currentMove = models.ForeignKey(Move, 
                                     related_name='currentMove', 
-                                    null=True)
+                                    null=True,
+                                    default=null)
     opponent = models.OneToOneField('self',
                                     related_name='_opponent',
-                                    null=True)
+                                    null=True,
+                                    default=null)
     # Saves the current user as their opponent's opponent
     def save(self, *args, **kwargs):
         super(Player, self).save()
@@ -85,3 +87,29 @@ class Battle(models.Model):
     # Store the time of the most recent move so that we know if the
     # players are inactive
     lastMoveTime = models.DateTimeField(auto_now_add=True)
+
+    def tryAddPlayer(self, player):
+        # Check for a slot and add the player
+        if (self.player1 is None):
+            # Add to slot
+            self.player1 = player
+            self.save()
+            if (not self.player2 is None):
+                # Don't need to add to the other player
+                # Since saving one does this automatically
+                player.opponent = self.player2
+                player.save()
+            return true
+        elif(self.player2 is None):
+            # Add to slot
+            self.player2 = player
+            self.save()
+            if (not self.player1 is None):
+                # Don't need to add to the other player
+                # Since saving one does this automatically
+                player.opponent = self.player1
+                player.save()
+            return true
+        else:
+            return false
+
