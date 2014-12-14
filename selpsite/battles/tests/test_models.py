@@ -45,21 +45,6 @@ class BattlesModelsTestCase(TestCase):
         self.assertEqual(self.player1.currentMove, move)
         self.assertEqual(battle.lastMoveTime, move.time)
 
-    def test_try_add_player_bad_status(self):
-        battle = Battle.objects.create(status=Battle.WAITING_FOR_CHOICE)
-        success = battle.tryAddPlayer(self.player1)
-        self.assertFalse(success)
-
-        battle.status = Battle.CALCULATING
-        battle.save()
-        success = battle.tryAddPlayer(self.player1)
-        self.assertFalse(success)
-
-        battle.status = Battle.FINISHED
-        battle.save()
-        success = battle.tryAddPlayer(self.player1)
-        self.assertFalse(success)
-
     def test_try_add_player_no_space(self):
         battle = Battle.objects.create(player1=self.player1, player2=self.player2)
         success = battle.tryAddPlayer(self.player3)
