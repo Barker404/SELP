@@ -13,26 +13,28 @@ def joinBattle(player):
     # Get all battles with space
     spaces = Battle.objects.filter(Q(player1__isnull=True,
                                      player2__isnull=False,
-                                     status=Battle.WAITING_FOR_PLAYERS) |
+                                     status=Battle.WAITING_FOR_PLAYER) |
                                    Q(player1__isnull=False,
                                      player2__isnull=True,
-                                     status=Battle.WAITING_FOR_PLAYERS))
+                                     status=Battle.WAITING_FOR_PLAYER))
 
     if (spaces):
         # (sort-of) prevent other players trying to join
         # Still obvious race condition, might need to fix later
         game = spaces.first()
-        game.status = CALCULATING
+        game.status = Battle.CALCULATING
         game.save()
 
         # Model method handles actually joining
         success = game.tryAddPlayer(player)
         if (success):
             # Reset the status
+            print ((bool(game.player1) and bool(game.player2)))
             if (bool(game.player1) and bool(game.player2)):
                 game.status = Battle.WAITING_FOR_CHOICE
             else:
-                game.status = Battle.WAITING_FOR_PLAYERS
+                game.status = Battle.WAITING_FOR_PLAYER
+            game.save()
             return True
         else:
             # Need to properly define what to do with status here
