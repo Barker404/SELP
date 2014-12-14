@@ -130,12 +130,11 @@ class Battle(models.Model):
         elif(self.player2 is None):
             # Add to slot
             self.player2 = player
-            if (not self.player1 is None):
-                # Don't need to add to the other player
-                # Since saving one does this automatically
-                player.opponent = self.player1
-                player.save()
-                self.status = WAITING_FOR_CHOICE
+            # Don't need to add to the other player
+            # Since saving one does this automatically
+            player.opponent = self.player1
+            player.save()
+            self.status = WAITING_FOR_CHOICE
             self.save()
             return True
         else:
