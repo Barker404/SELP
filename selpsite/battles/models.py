@@ -43,18 +43,24 @@ class Player(models.Model):
     # Saves the current user as their opponent's opponent
     def save(self, *args, **kwargs):
         super(Player, self).save()
-        self.opponent.opponent = self
+        if (not self.opponent is None):
+            self.opponent.opponent = self
     # This method is only for adding the move, it contains no logic for
     # if a move can be made at this time, or the effect of it
     def addMove(self, moveUsed):
-            move = Move.objects.create(moveUsed = moveUsed,
-                                       player = self,
-                                       moveNo = self.battle.turnNumber)
-            self.currentMove = move
-            self.save()
-            self.battle.lastMoveTime = move.time
-            self.battle.save()
-            return move
+        # Get the battle the player is in
+        if (not self.player1 is None):
+            battle = self.player1
+        else:
+            battle = self.player2    
+        move = Move.objects.create(moveUsed = moveUsed,
+                                   player = self,
+                                   moveNo = battle.turnNumber)
+        self.currentMove = move
+        self.save()
+        battle.lastMoveTime = move.time
+        battle.save()
+        return move
 
 
 # Represents a "battle" between two players
