@@ -44,8 +44,8 @@ class Player(models.Model):
     def save(self, *args, **kwargs):
         super(Player, self).save()
         self.opponent.opponent = self
-    #This method is only for adding the move, it contains no logic for
-    # if a move can be made add this time, or the effect of it
+    # This method is only for adding the move, it contains no logic for
+    # if a move can be made at this time, or the effect of it
     def addMove(self, moveUsed):
             move = Move.objects.create(moveUsed = moveUsed,
                                        player = self,
