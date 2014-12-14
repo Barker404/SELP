@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 
 # Represents a "move" in a battle made by a single player
 class Move(models.Model):
+    def __unicode__(self):
+        s = self.player + u" " +\
+            self.moveNo + u" - " +\
+            self.get_moveUsed_display()
+        return s
     # More moves to be added if time
     # Potentially "move backwards", "move forwards" etc
     # May also have some concept of foreign key to 
@@ -27,6 +32,8 @@ class Move(models.Model):
 # Different from a user in that it represents the player's information
 # for just the one game
 class Player(models.Model):
+    def __unicode__(self):
+        return self.user.username
     MAX_HP = 100
     user = models.ForeignKey(User)
     hp = models.IntegerField(default=MAX_HP)
@@ -65,6 +72,10 @@ class Player(models.Model):
 
 # Represents a "battle" between two players
 class Battle(models.Model):
+    def __unicode__(self):
+        return self.startTime + u" : " +\
+            self.player1 + u" vs " +\
+            self.player2
     WAITING_FOR_PLAYER = 1
     WAITING_FOR_CHOICE = 2
     CALCULATING = 3
