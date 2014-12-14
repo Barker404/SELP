@@ -29,7 +29,6 @@ def joinBattle(player):
         success = game.tryAddPlayer(player)
         if (success):
             # Reset the status
-            print ((bool(game.player1) and bool(game.player2)))
             if (bool(game.player1) and bool(game.player2)):
                 game.status = Battle.WAITING_FOR_CHOICE
             else:
