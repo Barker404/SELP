@@ -52,6 +52,9 @@ class Player(models.Model):
                                        moveNo = self.battle.turnNumber)
             self.currentMove = move
             self.save()
+            self.battle.lastMoveTime = move.time
+            self.battle.save()
+            return move
 
 
 # Represents a "battle" between two players
