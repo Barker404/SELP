@@ -74,19 +74,23 @@ class Battle(models.Model):
     # Will be null before players connect
     player1 = models.OneToOneField(Player,
                                    related_name='player1', 
-                                   null=True)
+                                   null=True,
+                                   default=null)
     player2 = models.OneToOneField(Player,
                                    related_name='player2', 
-                                   null=True)
+                                   null=True,
+                                   default=null)
     # Includes the current turn
     turnNumber = models.IntegerField(default=0)
     # Will be null during the game
     winner = models.ForeignKey(Player, 
                                related_name='winner', 
-                               null=True)
+                               null=True,
+                               default=null)
     # Store the time of the most recent move so that we know if the
     # players are inactive
-    lastMoveTime = models.DateTimeField(auto_now_add=True)
+    lastMoveTime = models.DateTimeField(null=True,
+                                        default=null)
 
     def tryAddPlayer(self, player):
         # Check for a slot and add the player
