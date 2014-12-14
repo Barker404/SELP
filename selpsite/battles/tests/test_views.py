@@ -20,3 +20,37 @@ class BattlesViewsTestCase(TestCase):
     def test_start_battle_view(self):
         response = self.client.get(reverse('startBattle'))
         self.assertEqual(response.status_code, 200)
+
+    def test_join_battle_create(self):
+        self.assertEqual(Battle.objects.count(), 0)
+        success = joinBattle(self.player1)
+
+        self.assertTrue(success)
+        self.assertEqual(Battle.objects.count(), 1)
+        battle = Battle.objects.first()
+        self.assertEqual(battle.status, Battle.WAITING_FOR_PLAYER)
+        self.assertEqual(battle.player1, self.player1)
+
+    def test_join_battle_existing_one(self):
+        Battle.objects.create(player1=self.player1)
+        self.assertEqual(Battle.objects.count(), 1)
+        success = joinBattle(self.player2)
+
+        self.assertTrue(success)
+        self.assertEqual(Battle.objects.count(), 1)
+        battle = Battle.objects.first()
+        self.assertEqual(battle.player1, self.player1)
+        self.assertEqual(battle.player2, self.player2)
+        self.assertEqual(battle.status, Battle.WAITING_FOR_CHOICE)
+
+    def test_join_battle_existing_two(self):
+        Battle.objects.create(player2=self.player2)
+        self.assertEqual(Battle.objects.count(), 1)
+        success = joinBattle(self.player1)
+
+        self.assertTrue(success)
+        self.assertEqual(Battle.objects.count(), 1)
+        battle = Battle.objects.first()
+        self.assertEqual(battle.player2, self.player2)
+        self.assertEqual(battle.player1, self.player1)
+        self.assertEqual(battle.status, Battle.WAITING_FOR_CHOICE)
