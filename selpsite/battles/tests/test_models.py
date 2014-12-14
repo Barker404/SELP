@@ -17,7 +17,6 @@ class BattlesModelsTestCase(TestCase):
         self.player3 = Player.objects.get(user=self.user3)
 
     def test_player_save(self):
-        print (self.player1)
         self.assertIsNone(self.player1.opponent)
         self.assertIsNone(self.player2.opponent)
         self.assertIsNone(self.player3.opponent)
@@ -43,4 +42,57 @@ class BattlesModelsTestCase(TestCase):
         self.assertEqual(move.moveNo, 1)
         self.assertEqual(self.player1.currentMove, move)
         self.assertEqual(battle.lastMoveTime, move.time)
-        
+
+    def test_try_add_player_bad_status(self):
+        battle = Battle.objects.create(status=Battle.WAITING_FOR_CHOICE)
+        success = battle.tryAddPlayer(self.player1)
+        self.assertFalse(success)
+
+        battle.status = Battle.CALCULATING
+        battle.save()
+        success = battle.tryAddPlayer(self.player1)
+        self.assertFalse(success)
+
+        battle.status = Battle.FINISHED
+        battle.save()
+        success = battle.tryAddPlayer(self.player1)
+        self.assertFalse(success)
+
+    def test_try_add_player_no_space(self):
+        battle = Battle.objects.create(player1=self.player1, player2=self.player2)
+        success = battle.tryAddPlayer(self.player3)
+        self.assertFalse(success)
+
+    def test_try_add_player_only(self):
+        battle = Battle.objects.create()
+        success = battle.tryAddPlayer(self.player1)
+        self.assertTrue(success)
+
+        self.assertEqual(battle.player1, self.player1)
+        self.assertEqual(battle.status, Battle.WAITING_FOR_PLAYER)
+
+    def test_try_add_player_one(self):
+        self.assertIsNone(self.player1.opponent)
+        self.assertIsNone(self.player2.opponent)
+
+        battle = Battle.objects.create(player2=self.player2)
+        success = battle.tryAddPlayer(self.player1)
+        self.assertTrue(success)
+
+        self.assertEqual(battle.player1, self.player1)
+        self.assertEqual(battle.status, Battle.WAITING_FOR_CHOICE)
+        self.assertEqual(self.player1.opponent, self.player2)
+        self.assertEqual(self.player2.opponent, self.player1)
+
+    def test_try_add_player_two(self):
+        self.assertIsNone(self.player1.opponent)
+        self.assertIsNone(self.player2.opponent)
+
+        battle = Battle.objects.create(player1=self.player1)
+        success = battle.tryAddPlayer(self.player2)
+        self.assertTrue(success)
+
+        self.assertEqual(battle.player2, self.player2)
+        self.assertEqual(battle.status, Battle.WAITING_FOR_CHOICE)
+        self.assertEqual(self.player2.opponent, self.player1)
+        self.assertEqual(self.player1.opponent, self.player2)
