@@ -35,11 +35,11 @@ class Player(models.Model):
     currentMove = models.ForeignKey(Move, 
                                     related_name='currentMove', 
                                     null=True,
-                                    default=null)
+                                    default=None)
     opponent = models.OneToOneField('self',
                                     related_name='_opponent',
                                     null=True,
-                                    default=null)
+                                    default=None)
     # Saves the current user as their opponent's opponent
     def save(self, *args, **kwargs):
         super(Player, self).save()
@@ -78,22 +78,22 @@ class Battle(models.Model):
     player1 = models.OneToOneField(Player,
                                    related_name='player1', 
                                    null=True,
-                                   default=null)
+                                   default=None)
     player2 = models.OneToOneField(Player,
                                    related_name='player2', 
                                    null=True,
-                                   default=null)
+                                   default=None)
     # Includes the current turn
     turnNumber = models.IntegerField(default=1)
     # Will be null during the game
     winner = models.ForeignKey(Player, 
                                related_name='winner', 
                                null=True,
-                               default=null)
+                               default=None)
     # Store the time of the most recent move so that we know if the
     # players are inactive
     lastMoveTime = models.DateTimeField(null=True,
-                                        default=null)
+                                        default=None)
 
     def tryAddPlayer(self, player):
         if (self.status != WAITING_FOR_PLAYER):
