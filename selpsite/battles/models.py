@@ -84,7 +84,7 @@ class Battle(models.Model):
                                    null=True,
                                    default=null)
     # Includes the current turn
-    turnNumber = models.IntegerField(default=0)
+    turnNumber = models.IntegerField(default=1)
     # Will be null during the game
     winner = models.ForeignKey(Player, 
                                related_name='winner', 
