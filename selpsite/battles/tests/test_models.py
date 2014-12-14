@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from battles.models import Move, Player, Battle
 
-class BattlesViewsTestCase(TestCase):
+class BattlesModelsTestCase(TestCase):
     fixtures = ['auth_user_testdata', 'battles_player_testdata']
 
     def setUp(self):
