@@ -20,9 +20,11 @@ class BattlesModelsTestCase(TestCase):
         self.assertIsNone(self.player1.opponent)
         self.assertIsNone(self.player2.opponent)
         self.assertIsNone(self.player3.opponent)
+        
         self.player1.opponent = self.player2
         self.player1.save()
         self.assertEqual(self.player2.opponent, self.player1)
+
         self.player1.opponent = None
         self.player1.save()
         self.player3.opponent = self.player2
