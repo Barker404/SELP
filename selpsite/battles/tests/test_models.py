@@ -56,7 +56,6 @@ class BattlesModelsTestCase(TestCase):
         self.assertTrue(success)
 
         self.assertEqual(battle.player1, self.player1)
-        self.assertEqual(battle.status, Battle.WAITING_FOR_PLAYER)
 
     def test_try_add_player_one(self):
         self.assertIsNone(self.player1.opponent)
@@ -67,7 +66,6 @@ class BattlesModelsTestCase(TestCase):
         self.assertTrue(success)
 
         self.assertEqual(battle.player1, self.player1)
-        self.assertEqual(battle.status, Battle.WAITING_FOR_CHOICE)
         self.assertEqual(self.player1.opponent, self.player2)
         self.assertEqual(self.player2.opponent, self.player1)
 
@@ -80,6 +78,5 @@ class BattlesModelsTestCase(TestCase):
         self.assertTrue(success)
 
         self.assertEqual(battle.player2, self.player2)
-        self.assertEqual(battle.status, Battle.WAITING_FOR_CHOICE)
         self.assertEqual(self.player2.opponent, self.player1)
         self.assertEqual(self.player1.opponent, self.player2)
