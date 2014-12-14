@@ -124,7 +124,7 @@ class Battle(models.Model):
                 # Since saving one does this automatically
                 player.opponent = self.player2
                 player.save()
-                self.status = WAITING_FOR_CHOICE
+                self.status = self.WAITING_FOR_CHOICE
             self.save()
             return True
         elif(self.player2 is None):
@@ -134,7 +134,7 @@ class Battle(models.Model):
             # Since saving one does this automatically
             player.opponent = self.player1
             player.save()
-            self.status = WAITING_FOR_CHOICE
+            self.status = self.WAITING_FOR_CHOICE
             self.save()
             return True
         else:
