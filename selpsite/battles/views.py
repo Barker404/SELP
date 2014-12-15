@@ -108,7 +108,7 @@ def calculateTurn(battle):
     damage1, damage2 = damages[move1.moveUsed][move2.moveUsed]
 
     player1.hp -= damage1
-    player2.hp -= damage1
+    player2.hp -= damage2
 
     # Reset moves
     player1.currentMove = None
