@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from battles.models import Move, Player, Battle
-from battles.views import joinBattle
+from battles.views import joinBattle, chooseMove
 
 class BattlesViewsTestCase_Views(TestCase):
 
@@ -74,7 +74,7 @@ class BattlesViewsTestCase_Turns(TestCase):
 
     def test_choose_move_bad_player(self):
         self.assertEqual(self.player3.move_set.count(), 0)
-        success = self.chooseMove(self.player3, 'R')
+        success = chooseMove(self.player3, 'R')
         self.assertFalse(success)
         self.assertEqual(self.player3.move_set.count(), 0)
 
@@ -82,9 +82,8 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.battle1.status = Battle.FINISHED
         self.battle1.save()
         self.assertEqual(self.player2.move_set.count(), 0)
-        success = self.chooseMove(self.player2, 'R')
+        success = chooseMove(self.player2, 'R')
         self.assertFalse(success)
         self.assertEqual(self.player2.move_set.count(), 0)
         self.assertEqual(self.battle1.status, Battle.FINISHED)
 
-    
