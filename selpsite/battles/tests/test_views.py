@@ -215,8 +215,8 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.player2.hp = 20
         self.player2.save()
         self.battle1.status = Battle.CALCULATING
-        self.battle.player1 = self.player2
-        self.battle.player2 = self.player1
+        self.battle1.player1 = self.player2
+        self.battle1.player2 = self.player1
         self.battle1.save()
 
         self.calculate_turn_sanity()
