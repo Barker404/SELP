@@ -136,7 +136,7 @@ def calculateTurn(battle):
             else:
                 player1.user.profile.addLoss()
             # Winner
-            battle.winner.user.addWin()
+            battle.winner.user.profile.addWin()
 
             player1.user.profile.save()
             player2.user.profile.save()
