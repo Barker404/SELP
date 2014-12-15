@@ -110,10 +110,6 @@ def calculateTurn(battle):
     player1.hp -= damage1
     player2.hp -= damage2
 
-    # Reset moves
-    player1.currentMove = None
-    player2.currentMove = None
-
     player1.save()
     player2.save()
 
@@ -141,6 +137,12 @@ def calculateTurn(battle):
             player1.user.profile.save()
             player2.user.profile.save()
     else:
+        # Reset moves
+        player1.currentMove = None
+        player2.currentMove = None
+        player1.save()
+        player2.save()
+
         # Prepare battle for next input
         battle.turnNumber += 1
         battle.status = Battle.WAITING_FOR_CHOICE
