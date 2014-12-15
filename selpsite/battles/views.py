@@ -105,7 +105,7 @@ def calculateTurn(battle):
     # battle system is expanded
 
 
-    damage1, damage2 = damages[move1][move2]
+    damage1, damage2 = damages[move1.moveUsed][move2.moveUsed]
 
     player1.hp -= damage1
     player2.hp -= damage1
