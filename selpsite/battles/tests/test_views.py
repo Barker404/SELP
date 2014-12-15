@@ -87,3 +87,14 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player2.move_set.count(), 0)
         self.assertEqual(self.battle1.status, Battle.FINISHED)
 
+    def test_choose_move_good(self):
+        self.assertEqual(self.battle1.turnNumber, 1)
+        self.assertEqual(self.player1.move_set.count(), 0)
+        success = chooseMove(self.player1, 'R')
+        self.assertTrue(success)
+        self.assertEqual(self.player1.move_set.count(), 1)
+        
+        move = self.player1.move_set.first()
+        self.assertEqual(move.player, self.player1)
+        self.assertEqual(move.moveNo, 1)
+        self.assertEqual(move.moveUsed, 'R')
