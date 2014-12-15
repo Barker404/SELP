@@ -59,8 +59,8 @@ class Player(models.Model):
         if (hasattr(self, 'player1') and 
             not self.player1 is None):
             battle = self.player1
-        elif (hasattr(self, 'player1') and 
-            not self.player1 is None):
+        elif (hasattr(self, 'player2') and 
+            not self.player2 is None):
             battle = self.player2
         else: 
             return None
