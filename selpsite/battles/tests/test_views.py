@@ -270,7 +270,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player1.user.profile.losses, 1)
         self.assertEqual(self.player2.user.profile.wins, 1)
         self.assertEqual(self.player2.user.profile.losses, 0)
-        self.assertEqual(self.battle1.turnNumber, 2)
+        self.assertEqual(self.battle1.turnNumber, 1)
     
     def test_calculate_turn_p2_wins(self):
         self.player1.currentMove = self.move1
@@ -306,7 +306,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player1.user.profile.losses, 1)
         self.assertEqual(self.player2.user.profile.wins, 1)
         self.assertEqual(self.player2.user.profile.losses, 0)
-        self.assertEqual(self.battle1.turnNumber, 2)
+        self.assertEqual(self.battle1.turnNumber, 1)
 
     def calculate_turn_sanity(self):
         self.assertEqual(self.player1.hp, 100)
