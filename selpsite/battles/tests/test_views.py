@@ -6,7 +6,14 @@ from django.contrib.auth.models import User
 from battles.models import Move, Player, Battle
 from battles.views import joinBattle
 
-class BattlesViewsTestCase(TestCase):
+class BattlesViewsTestCase_Views(TestCase):
+
+    def test_start_battle_view(self):
+        response = self.client.get(reverse('startBattle'))
+        self.assertEqual(response.status_code, 200)
+
+
+class BattlesViewsTestCase_Join(TestCase):
     fixtures = ['auth_user_testdata', 'battles_player_testdata']
 
     def setUp(self):
@@ -16,10 +23,6 @@ class BattlesViewsTestCase(TestCase):
         self.player1 = Player.objects.get(user=self.user1)
         self.player2 = Player.objects.get(user=self.user2)
         self.player3 = Player.objects.get(user=self.user3)
-
-    def test_start_battle_view(self):
-        response = self.client.get(reverse('startBattle'))
-        self.assertEqual(response.status_code, 200)
 
     def test_join_battle_create(self):
         self.assertEqual(Battle.objects.count(), 0)
