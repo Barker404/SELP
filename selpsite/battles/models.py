@@ -67,7 +67,6 @@ class Player(models.Model):
         move = Move.objects.create(moveUsed = moveUsed,
                                    player = self,
                                    moveNo = battle.turnNumber)
-        move.save()
         self.currentMove = move
         self.save()
         battle.lastMoveTime = move.time
