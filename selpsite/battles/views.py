@@ -122,9 +122,9 @@ def calculateTurn(battle):
         battle.status = Battle.FINISHED
         # Set the winner
         if (player1.hp > 0):
-            battle.winner = player1()
+            battle.winner = player1
         elif (player2.hp > 0):
-            battle.winner = player2()
+            battle.winner = player2
         else:
             battle.winner = tieBreak(player1, player2)
 
