@@ -260,7 +260,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.player2 = Player.objects.get(user=self.user2)
         self.player3 = Player.objects.get(user=self.user3)
         self.assertEqual(self.battle1.status, Battle.FINISHED)
-        self.assertEqual(self.battle1.winner, self.player1)
+        self.assertEqual(self.battle1.winner, self.player2)
         self.assertEqual(self.player1.currentMove, self.move1)
         self.assertEqual(self.player2.currentMove, self.move2)
 
@@ -296,7 +296,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.player2 = Player.objects.get(user=self.user2)
         self.player3 = Player.objects.get(user=self.user3)
         self.assertEqual(self.battle1.status, Battle.FINISHED)
-        self.assertEqual(self.battle1.winner, self.player1)
+        self.assertEqual(self.battle1.winner, self.player2)
         self.assertEqual(self.player1.currentMove, self.move1)
         self.assertEqual(self.player2.currentMove, self.move2)
 
