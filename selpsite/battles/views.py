@@ -111,7 +111,7 @@ def calculateTurn(battle):
     player2.hp -= damage1
 
     # Reset moves
-    battle.player1.currentMove = None
+    player1.currentMove = None
     player2.currentMove = None
 
     player1.save()
