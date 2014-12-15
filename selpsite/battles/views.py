@@ -75,4 +75,79 @@ def chooseMove(player, move):
     # success = calculateTurn(battle)
     return success
 
+# Defines how much damage is dealt to each party for a particular move 
+# combination
+# damages[p1Move][p2Move] = (p1damage, p2damage)
+damages = {
+    'R': { 'R': (00,00), 'P': (30,00), 'S': (00,30)},
+    'P': { 'R': (00,30), 'P': (00,00), 'S': (30,00)},
+    'S': { 'R': (30,00), 'P': (00,30), 'S': (00,00)}
+}
 
+def calculateTurn(battle):
+
+    # Check battle is ready for calculating
+    if (battle.player1 is None or 
+        battle.player2 is None or
+        battle.player1.currentMove is None or
+        battle.player2.currentMove is None or
+        battle.status != Battle.CALCULATING):
+        return False
+
+        player1 = battle.player1
+        player2 = battle.player2
+
+        move1 = player1.currentMove
+        move2 = player2.currentMove
+        # Calculate damage - This will get more sophisticated when 
+        # battle system is expanded
+
+
+        damage1, damage2 = damages[move1][move2]
+
+        player1.hp -= damage1
+        player2.hp -= damage1
+
+        # Reset moves
+        battle.player1.currentMove = None
+        player2.currentMove = None
+
+        player1.save()
+        player2.save()
+
+        if (player1.hp <= 0 or player2.hp <= 0):
+            # Someone has died, battle is over
+            battle.status = Battle.FINISHED
+            # Set the winner
+            if (player1.hp > 0):
+                battle.winner = player1()
+            elif (player2.hp > 0):
+                battle.winner = player2()
+            else:
+                battle.winner = tieBreak(player1, player2)
+
+            # If somebody won (it was not a draw) update wins/losses
+            if (not battle.winner is None):
+                # Loser
+                if (battle.winner == player1):
+                    player2.user.profile.addLoss()
+                else:
+                    player1.user.profile.addLoss()
+                # Winner
+                battle.winner.user.addWin()
+
+                player1.user.profile.save()
+                player2.user.profile.save()
+        else:
+            # Prepare battle for next input
+            battle.turnNumber += 1
+            battle.status = Battle.WAITING_FOR_CHOICE
+
+        # Finally, save battle so clients know we're done
+        battle.save()
+
+# Function to break ties between two players
+# Called in the case where both players reach 0 hp at the same time
+# Can return None to define a draw
+def tieBreak(player1, player2):
+    return None
