@@ -1,0 +1,15 @@
+[
+{
+    "pk": 1, 
+    "model": "battles.battle", 
+    "fields": {
+        "status": 2, 
+        "turnNumber": 1, 
+        "lastMoveTime": null, 
+        "winner": null, 
+        "player2": 1, 
+        "player1": 2, 
+        "startTime": "2014-12-15T05:50:04.335Z"
+    }
+}
+]
