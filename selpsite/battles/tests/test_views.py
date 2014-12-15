@@ -111,14 +111,14 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.battle1.status = Battle.CALCULATING
         self.battle1.save()
 
-        self.calculate_turn_bad_sanity()
+        self.calculate_turn_sanity()
 
         self.battle1.player1 = None
         self.battle1.save()
         success = calculateTurn(self.battle1)
         self.assertFalse(success)
 
-        self.calculate_turn_bad_sanity()
+        self.calculate_turn_sanity()
 
 
     def test_calculate_turn_bad_player2_none(self):
@@ -134,7 +134,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         success = calculateTurn(self.battle1)
         self.assertFalse(success)
         
-        self.calculate_turn_bad_sanity()
+        self.calculate_turn_sanity()
 
     def test_calculate_turn_bad_player1_current_move_none(self):
         self.player2.currentMove = self.move2
@@ -145,7 +145,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         success = calculateTurn(self.battle1)
         self.assertFalse(success)
         
-        self.calculate_turn_bad_sanity()
+        self.calculate_turn_sanity()
 
     def test_calculate_turn_bad_player2_current_move_none(self):
         self.player1.currentMove = self.move1
@@ -156,7 +156,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         success = calculateTurn(self.battle1)
         self.assertFalse(success)
         
-        self.calculate_turn_bad_sanity()
+        self.calculate_turn_sanity()
 
     def test_calculate_turn_bad_status_wrong(self):
         self.player1.currentMove = self.move1
@@ -181,9 +181,89 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.battle1.status = Battle.FINISHED
         self.battle1.save()
 
-        self.calculate_turn_bad_sanity()
+        self.calculate_turn_sanity()
 
-    def calculate_turn_bad_sanity(self):
+    def test_calculate_turn_good(self):
+        self.player1.currentMove = self.move1
+        self.player1.save()
+        self.player2.currentMove = self.move2
+        self.player2.save()
+        self.battle1.status = Battle.CALCULATING
+        self.battle1.save()
+
+        self.calculate_turn_sanity()
+
+        success = calculateTurn(self.battle1)
+        self.assertTrue(success)
+
+        self.assertEqual(self.battle1.status, Battle.WAITING_FOR_CHOICE)
+        self.assertEqual(self.player1.currentMove, None)
+        self.assertEqual(self.player2.currentMove, None)
+
+        self.assertEqual(self.player1.hp, 70)
+        self.assertEqual(self.player2.hp, 100)
+        self.assertEqual(self.player1.user.profile.wins, 0)
+        self.assertEqual(self.player1.user.profile.losses, 0)
+        self.assertEqual(self.player2.user.profile.wins, 0)
+        self.assertEqual(self.player2.user.profile.losses, 0)
+        self.assertEqual(self.battle1.turnNumber, 2)
+
+    def test_calculate_turn_p1_wins(self):
+        self.player1.currentMove = self.move1
+        self.player1.save()
+        self.player2.currentMove = self.move2
+        self.player2.hp = 20
+        self.player2.save()
+        self.battle1.status = Battle.CALCULATING
+        self.battle.player1 = self.player2
+        self.battle.player2 = self.player1
+        self.battle1.save()
+
+        self.calculate_turn_sanity()
+
+        success = calculateTurn(self.battle1)
+        self.assertTrue(success)
+
+        self.assertEqual(self.battle1.status, Battle.FINISHED)
+        self.assertEqual(self.battle1.winner, self.player1)
+        self.assertEqual(self.player1.currentMove, self.move1)
+        self.assertEqual(self.player2.currentMove, self.move2)
+
+        self.assertEqual(self.player1.hp, -20)
+        self.assertEqual(self.player2.hp, 100)
+        self.assertEqual(self.player1.user.profile.wins, 0)
+        self.assertEqual(self.player1.user.profile.losses, 1)
+        self.assertEqual(self.player2.user.profile.wins, 1)
+        self.assertEqual(self.player2.user.profile.losses, 0)
+        self.assertEqual(self.battle1.turnNumber, 2)
+    
+    def test_calculate_turn_p2_wins(self):
+        self.player1.currentMove = self.move1
+        self.player1.save()
+        self.player2.currentMove = self.move2
+        self.player2.save()
+        self.battle1.status = Battle.CALCULATING
+        self.battle1.save()
+
+        self.calculate_turn_sanity()
+
+        success = calculateTurn(self.battle1)
+        self.assertTrue(success)
+
+        self.assertEqual(self.battle1.status, Battle.FINISHED)
+        self.assertEqual(self.battle1.winner, self.player1)
+        self.assertEqual(self.player1.currentMove, self.move1)
+        self.assertEqual(self.player2.currentMove, self.move2)
+
+        self.assertEqual(self.player1.hp, -20)
+        self.assertEqual(self.player2.hp, 100)
+        self.assertEqual(self.player1.user.profile.wins, 0)
+        self.assertEqual(self.player1.user.profile.losses, 1)
+        self.assertEqual(self.player2.user.profile.wins, 1)
+        self.assertEqual(self.player2.user.profile.losses, 0)
+        self.assertEqual(self.battle1.turnNumber, 2)
+
+    def calculate_turn_sanity(self):
         self.assertEqual(self.player1.hp, 100)
         self.assertEqual(self.player2.hp, 100)
         self.assertEqual(self.player1.user.profile.wins, 0)
@@ -191,4 +271,3 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player2.user.profile.wins, 0)
         self.assertEqual(self.player2.user.profile.losses, 0)
         self.assertEqual(self.battle1.turnNumber, 1)
-
