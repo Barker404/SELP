@@ -48,10 +48,12 @@ def joinBattle(player):
 
 def chooseMove(player, move):
     # Check the player is in a battle
-    if (not player.player1 is None):
+    if (hasattr(player, 'player1') and 
+        not player.player1 is None):
         battle = player.player1
         playerNo = 1
-    elif (not player.player2 is None):
+    elif (hasattr(player, 'player2') and
+        not player.player2 is None):
         battle = player.player2
         playerNo = 2
     else:
