@@ -264,7 +264,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player1.currentMove, self.move1)
         self.assertEqual(self.player2.currentMove, self.move2)
 
-        self.assertEqual(self.player1.hp, -20)
+        self.assertEqual(self.player1.hp, -10)
         self.assertEqual(self.player2.hp, 100)
         self.assertEqual(self.player1.user.profile.wins, 0)
         self.assertEqual(self.player1.user.profile.losses, 1)
@@ -300,7 +300,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player1.currentMove, self.move1)
         self.assertEqual(self.player2.currentMove, self.move2)
 
-        self.assertEqual(self.player1.hp, -20)
+        self.assertEqual(self.player1.hp, -10)
         self.assertEqual(self.player2.hp, 100)
         self.assertEqual(self.player1.user.profile.wins, 0)
         self.assertEqual(self.player1.user.profile.losses, 1)
