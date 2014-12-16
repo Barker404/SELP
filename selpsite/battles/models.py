@@ -53,13 +53,6 @@ class Player(models.Model):
         if (not self.opponent is None):
             self.opponent.opponent = self
 
-    # Returns boolean indicating if the player is either player1 or
-    # player2 of some battle
-    # TODO: This should be a field which is automatically updated in
-    # Battle.save()
-    def isInBattle(self):
-        return (self.getPlayerNumber() != 0)
-
     # Returns either 1 or 2 based on the player number in the related
     # Battle object, or 0 if the player is not in any Battle
     # TODO: This should be a field which is automatically updated in
@@ -90,6 +83,13 @@ class Player(models.Model):
             return self.player2
         else:
             return None
+
+    # Returns boolean indicating if the player is either player1 or
+    # player2 of some battle
+    # TODO: This should be a field which is automatically updated in
+    # Battle.save()
+    def isInBattle(self):
+        return (self.getPlayerNumber() != 0)
 
     # This method is only for adding the move, it contains no logic for
     # if a move can be made at this time, or the effect of it
