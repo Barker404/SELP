@@ -94,3 +94,27 @@ class BattlesModelsTestCase_ExistingBattle(TestCase):
     def test_try_add_player_no_space(self):
         success = self.battle1.tryAddPlayer(self.player3)
         self.assertFalse(success)
+
+    def test_get_player_number(self):
+        p1 = self.player1.getPlayerNumber()
+        self.assertEqual(p1, 1)
+        p2 = self.player2.getPlayerNumber()
+        self.assertEqual(p2, 2)
+        p3 = self.player3.getPlayerNumber()
+        self.assertEqual(p3, 0)
+
+    def test_get_battle(self):
+        p1 = self.player1.getBattle()
+        self.assertEqual(p1, self.battle1)
+        p2 = self.player2.getBattle()
+        self.assertEqual(p2, self.battle1)
+        p3 = self.player3.getBattle()
+        self.assertIsNone(p3)
+
+    def test_is_in_battle(self):
+        p1 = self.player1.isInBattle()
+        self.assertTrue(p1)
+        p2 = self.player2.isInBattle()
+        self.assertTrue(p2)
+        p3 = self.player3.isInBattle()
+        self.assertFalse(p3)
