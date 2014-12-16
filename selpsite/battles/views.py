@@ -1,3 +1,4 @@
+import json
 from django.http import (
                         HttpResponse, 
                         HttpResponseBadRequest, 
@@ -6,6 +7,7 @@ from django.http import (
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from models import Battle, Player
+from django.core import serializers
 
 def startBattleView(request):
     return render(request, 'battles/startBattle.html')
@@ -30,9 +32,27 @@ def ajaxGetBattleStatusView(request):
     # and that their player is in a battle
     if (not player.isInBattle()):
         return HttpResponseBadRequest()
-    # Do stuff
-    return HttpResponse(player.getBattle().status)
-    return None
+
+    # Serialize the data
+    # We serialize the objects in lists because the django 
+    # serialization requires a list of objects
+    battleData = serializers.serialize('json', [player.getBattle(),])
+    playerData = serializers.serialize('json', [player,])
+    opponentData = serializers.serialize('json', [player.opponent,])
+    
+    # Add to dictionary
+    # Since we want to output individual objects within a single 
+    # larger object, we know reload each object and take the first item 
+    # from the single-item list we made earlier
+    responseData = {}
+    responseData['battle'] = json.loads(battleData)[0]
+    responseData['battle'] = json.loads(playerData)[0]
+    responseData['battle'] = json.loads(opponentData)[0]
+
+    # Finally, dump the full object
+    serializedData = json.dumps(responseData)
+    return HttpResponse(serializedData, 
+                        content_type="application/json")
 
 # Will try to find a game/make one and join it
 # Returns true if the player is now in a battle, else false
