@@ -31,7 +31,7 @@ def ajaxGetBattleStatusView(request):
     if (not player.isInBattle()):
         return HttpResponseBadRequest()
     # Do stuff
-    return HttpResponse(player.getBattle.status)
+    return HttpResponse(player.getBattle().status)
     return None
 
 # Will try to find a game/make one and join it
