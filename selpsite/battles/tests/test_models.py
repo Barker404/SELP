@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from battles.models import Move, Player, Battle
 
 class BattlesModelsTestCase(TestCase):
-    fixtures = ['auth_user_testdata', 'battles_player_testdata']
+    fixtures = ['auth_user_testdata',
+                'battles_player_testdata']
 
     def setUp(self):
         self.user1 = User.objects.get(username='user1')
@@ -45,11 +46,6 @@ class BattlesModelsTestCase(TestCase):
         self.assertEqual(self.player1.currentMove, move)
         self.assertEqual(battle.lastMoveTime, move.time)
 
-    def test_try_add_player_no_space(self):
-        battle = Battle.objects.create(player1=self.player1, player2=self.player2)
-        success = battle.tryAddPlayer(self.player3)
-        self.assertFalse(success)
-
     def test_try_add_player_only(self):
         battle = Battle.objects.create()
         success = battle.tryAddPlayer(self.player1)
@@ -80,3 +76,21 @@ class BattlesModelsTestCase(TestCase):
         self.assertEqual(battle.player2, self.player2)
         self.assertEqual(self.player2.opponent, self.player1)
         self.assertEqual(self.player1.opponent, self.player2)
+
+class BattlesModelsTestCase_ExistingBattle(TestCase):
+    fixtures = ['auth_user_testdata',
+                'battles_player_testdata', 
+                'battles_battle_testdata']
+
+    def setUp(self):
+        self.user1 = User.objects.get(username='user1')
+        self.user2 = User.objects.get(username='lewis')
+        self.user3 = User.objects.get(username='staff')
+        self.player1 = Player.objects.get(user=self.user1)
+        self.player2 = Player.objects.get(user=self.user2)
+        self.player3 = Player.objects.get(user=self.user3)
+        self.battle1 = Battle.objects.first()
+
+    def test_try_add_player_no_space(self):
+        success = self.battle1.tryAddPlayer(self.player3)
+        self.assertFalse(success)
