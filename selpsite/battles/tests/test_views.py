@@ -61,7 +61,7 @@ class BattlesViewsTestCase_Join(TestCase):
 class BattlesViewsTestCase_Turns(TestCase):
     fixtures = ['auth_user_testdata',
                 'users_testdata', 
-                'battles_player_testdata', 
+                'battles_player_opponents_testdata', 
                 'battles_battle_testdata', 
                 'battles_move_testdata']
 
@@ -320,7 +320,7 @@ class BattlesViewsTestCase_Turns(TestCase):
 class BattleAjaxViewsTestCase(TestCase):
     fixtures = ['auth_user_testdata',
                 'users_testdata', 
-                'battles_player_testdata', 
+                'battles_player_opponents_testdata', 
                 'battles_battle_testdata', 
                 'battles_move_testdata']
 

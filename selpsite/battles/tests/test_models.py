@@ -79,7 +79,7 @@ class BattlesModelsTestCase(TestCase):
 
 class BattlesModelsTestCase_ExistingBattle(TestCase):
     fixtures = ['auth_user_testdata',
-                'battles_player_testdata', 
+                'battles_player_opponents_testdata', 
                 'battles_battle_testdata']
 
     def setUp(self):
