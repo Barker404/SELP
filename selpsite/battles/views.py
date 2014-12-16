@@ -8,10 +8,10 @@ def startBattleView(request):
 
 def ajaxGetBattleStatusView(request):
     # Check user is logged in, and sending a GET request
-    if (request.user.is_authenticated() or
-        request.method == 'GET' or
+    if (request.user.is_authenticated() and
+        request.method == 'GET' and
         'playerId' in request.GET):
-        playerId = request.Get['playerId']
+        playerId = request.GET['playerId']
         playerQuery = Player.objects.filter(pk=playerId)
         # Check the playerId they sent exists
         if (playerQuery.exists()):
@@ -22,7 +22,6 @@ def ajaxGetBattleStatusView(request):
                 player.isInBattle):
                 # Do stuff
                 return HttpResponse(player.getBattle.status)
-
     return None
 
 # Will try to find a game/make one and join it
