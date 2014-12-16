@@ -1,5 +1,9 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import (
+                        HttpResponse, 
+                        HttpResponseBadRequest, 
+                        HttpResponseForbidden
+                        )
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from models import Battle, Player
 
@@ -7,21 +11,27 @@ def startBattleView(request):
     return render(request, 'battles/startBattle.html')
 
 def ajaxGetBattleStatusView(request):
-    # Check user is logged in, and sending a GET request
-    if (request.user.is_authenticated() and
-        request.method == 'GET' and
-        'playerId' in request.GET):
-        playerId = request.GET['playerId']
-        playerQuery = Player.objects.filter(pk=playerId)
-        # Check the playerId they sent exists
-        if (playerQuery.exists()):
-            player = playerQuery.first()
-            # Check the user is logged in as the user of the sent player
-            # and that their player is in a battle
-            if (player.user == request.user and
-                player.isInBattle):
-                # Do stuff
-                return HttpResponse(player.getBattle.status)
+    # Check user is logged in
+    if (not request.user.is_authenticated()):
+        return HttpResponseForbidden()
+    # and sending a GET request
+    if (not request.method == 'GET'):
+        return HttpResponseBadRequest()
+    # With a playerId attatched
+    if (not 'playerId' in request.GET):
+        return HttpResponseBadRequest()
+
+    playerId = request.GET['playerId']
+    # Check the playerId they sent exists
+    player = get_object_or_404(Player, pk=playerId)
+    # Check the user is logged in as the user of the sent player
+    if (player.user != request.user):
+        return HttpResponseForbidden()
+    # and that their player is in a battle
+    if (not player.isInBattle()):
+        return HttpResponseBadRequest()
+    # Do stuff
+    return HttpResponse(player.getBattle.status)
     return None
 
 # Will try to find a game/make one and join it
