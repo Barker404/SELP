@@ -46,8 +46,8 @@ def ajaxGetBattleStatusView(request):
     # from the single-item list we made earlier
     responseData = {}
     responseData['battle'] = json.loads(battleData)[0]
-    responseData['battle'] = json.loads(playerData)[0]
-    responseData['battle'] = json.loads(opponentData)[0]
+    responseData['player'] = json.loads(playerData)[0]
+    responseData['opponent'] = json.loads(opponentData)[0]
 
     # Finally, dump the full object
     serializedData = json.dumps(responseData)
