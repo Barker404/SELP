@@ -335,3 +335,7 @@ class BattleAjaxViewsTestCase(TestCase):
         self.move1 = Move.objects.all()[0] # player1 - R
         self.move2 = Move.objects.all()[1] # player2 - P
               
+    def test_ajax_get_battle_status_view_bad(self):
+        response = self.client.get(reverse('getBattleStatus'))
+        self.assertIsNone(response)
+  
