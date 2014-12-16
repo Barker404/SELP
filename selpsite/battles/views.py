@@ -1,9 +1,29 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Q
-from models import Battle
+from models import Battle, Player
 
 def startBattleView(request):
     return render(request, 'battles/startBattle.html')
+
+def ajaxGetBattleStatusView(request):
+    # Check user is logged in, and sending a GET request
+    if (request.user.is_authenticated() or
+        request.method == 'GET' or
+        'playerId' in request.GET):
+        playerId = request.Get['playerId']
+        playerQuery = Player.objects.filter(pk=playerId)
+        # Check the playerId they sent exists
+        if (playerQuery.exists()):
+            player = playerQuery.first()
+            # Check the user is logged in as the user of the sent player
+            # and that their player is in a battle
+            if (player.user == request.user and
+                player.isInBattle):
+                # Do stuff
+                return HttpResponse(player.getBattle.status)
+
+    return None
 
 # Will try to find a game/make one and join it
 # Returns true if the player is now in a battle, else false
