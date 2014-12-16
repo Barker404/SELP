@@ -83,7 +83,7 @@ class Player(models.Model):
     # TODO: This should be a field which is automatically updated in
     # Battle.save()
     def getBattle(self):
-        playerNo = self.getPlayerNumber
+        playerNo = self.getPlayerNumber()
         if (playerNo == 1):
             return self.player1
         elif(playerNo == 2):
