@@ -101,13 +101,8 @@ class Player(models.Model):
     # if a move can be made at this time, or the effect of it
     def addMove(self, moveUsed):
         # Get the battle the player is in
-        if (hasattr(self, 'player1') and 
-            not self.player1 is None):
-            battle = self.player1
-        elif (hasattr(self, 'player2') and 
-            not self.player2 is None):
-            battle = self.player2
-        else: 
+        battle = self.getBattle()
+        if (battle is None):
             return None
         move = Move.objects.create(moveUsed = moveUsed,
                                    player = self,
