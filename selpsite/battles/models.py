@@ -58,7 +58,7 @@ class Player(models.Model):
     # TODO: This should be a field which is automatically updated in
     # Battle.save()
     def isInBattle(self):
-        return (self.getPlayerNumber != 0)
+        return (self.getPlayerNumber() != 0)
 
     # Returns either 1 or 2 based on the player number in the related
     # Battle object, or 0 if the player is not in any Battle
