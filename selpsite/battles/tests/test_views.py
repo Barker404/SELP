@@ -316,3 +316,22 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player2.user.profile.wins, 0)
         self.assertEqual(self.player2.user.profile.losses, 0)
         self.assertEqual(self.battle1.turnNumber, 1)
+
+class BattleAjaxViewsTestCase(TestCase):
+    fixtures = ['auth_user_testdata',
+                'users_testdata', 
+                'battles_player_testdata', 
+                'battles_battle_testdata', 
+                'battles_move_testdata']
+
+    def setUp(self):
+        self.user1 = User.objects.get(username='user1')
+        self.user2 = User.objects.get(username='lewis')
+        self.user3 = User.objects.get(username='staff')
+        self.player1 = Player.objects.get(user=self.user1)
+        self.player2 = Player.objects.get(user=self.user2)
+        self.player3 = Player.objects.get(user=self.user3)
+        self.battle1 = Battle.objects.first()
+        self.move1 = Move.objects.all()[0] # player1 - R
+        self.move2 = Move.objects.all()[1] # player2 - P
+              
