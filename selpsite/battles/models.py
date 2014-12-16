@@ -58,21 +58,17 @@ class Player(models.Model):
     # TODO: This should be a field which is automatically updated in
     # Battle.save()
     def isInBattle(self):
-        # The attributes to check area related_names for the OneToOne
-        # relations player1 and player2 of Battle
-        # Therefore the attribute might not even exist, so we check
-        # this first
-        return
-            ((hasattr(self, 'player1') and 
-            not self.player1 is None)) or 
-            ((hasattr(self, 'player2') and
-            not self.player2 is None))
+        return (self.getPlayerNumber != 0)
 
     # Returns either 1 or 2 based on the player number in the related
     # Battle object, or 0 if the player is not in any Battle
     # TODO: This should be a field which is automatically updated in
     # Battle.save()
     def getPlayerNumber(self):
+        # The attributes to check area related_names for the OneToOne
+        # relations player1 and player2 of Battle
+        # Therefore the attribute might not even exist, so we check
+        # this first
         if (hasattr(self, 'player1') and 
             not self.player1 is None):
             return 1
@@ -87,15 +83,13 @@ class Player(models.Model):
     # TODO: This should be a field which is automatically updated in
     # Battle.save()
     def getBattle(self):
-        if (hasattr(self, 'player1') and 
-            not self.player1 is None):
+        playerNo = self.getPlayerNumber
+        if (playerNo == 1):
             return self.player1
-        elif (hasattr(self, 'player2') and
-            not self.player2 is None):
+        elif(playerNo == 2):
             return self.player2
         else:
             return None
-
 
     # This method is only for adding the move, it contains no logic for
     # if a move can be made at this time, or the effect of it
