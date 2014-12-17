@@ -40,11 +40,6 @@ $(document).ready(function() {
     });
 });
 
-// AJAX calls required:
-// 1. POST (?) trying to join a game
-// 2. GET status
-// 3. POST move choice
-
 function startBattle() {
     alert("To be implemented");
     createPlayer();
@@ -58,6 +53,7 @@ function startBattle() {
                     success == true;
                 }
                 else {
+                    alert("bad join attempt");
                     // Error message?
                 }
         });
@@ -104,34 +100,40 @@ function getUpdatedDetails() {
         status = data.battle.fields.status;
 
         if (oldStatus != status) {
-            hideAll();
-            switch(status) {
-                // Display parts of the page based on the status
-                case StatusEnum.WAITING_FOR_PLAYER:
-                    displayWaitingForPlayer();
-                    break;
-                case StatusEnum.WAITING_FOR_CHOICE:
-                    if (!choiceMade) {
-                        displayWaitingForChoice();
-                    } else {
-                        displayWaitingForOtherChoice();
-                    }
-                    break;
-                case StatusEnum.CALCULATING:
-                    displayCalculating();
-                    break;
-                case StatusEnum.FINISHED:
-                    displayFinished();
-                    break;
-                default:
-                    displayError();
-            }
+            displayNewPageParts();
         }
     });
 }
 
+
+// Display parts of the page based on the status
+function displayNewPageParts(status) {
+    hideAll();
+    switch(status) {
+        case StatusEnum.WAITING_FOR_PLAYER:
+            displayWaitingForPlayer();
+            break;
+        case StatusEnum.WAITING_FOR_CHOICE:
+            if (!choiceMade) {
+                displayWaitingForChoice();
+            } else {
+                displayWaitingForOtherChoice();
+            }
+            break;
+        case StatusEnum.CALCULATING:
+            displayCalculating();
+            break;
+        case StatusEnum.FINISHED:
+            displayFinished();
+            break;
+        default:
+            displayError();
+    }
+
+}
+
 // This updates the battle details on the page
-function displayUpdatedDetails() {
+function displayUpdatedDetails(data) {
 
 }
 
