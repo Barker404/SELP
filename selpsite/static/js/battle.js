@@ -1,4 +1,5 @@
 var status = "0";
+var turnNumber = 0;
 var playerId = 0;
 var choiceMade = false;
 // How often to update information (ms)
@@ -86,9 +87,20 @@ function getUpdatedDetails() {
         // Check response http status code
         displayUpdatedDetails(data);
 
+        // Check both the status AND the turn number
+        // During th battle, the status will almost always be
+        // "Waiting for player choice"
+        // But we can tell if a turn has processed and we need to
+        // input again by the turn number
         var oldStatus = status;
         status = data.battle.fields.status;
+        var oldTurnNumber = turnNumber;
+        turnNumber = Number(data.battle.fields.turnNumber);
         if (oldStatus != status) {
+            displayNewPageParts();
+        }
+        if (turnNumber != oldTurnNumber) {
+            choiceMade = false;
             displayNewPageParts();
         }
     });
@@ -123,7 +135,15 @@ function displayNewPageParts() {
 
 // This updates the battle details on the page
 function displayUpdatedDetails(data) {
-
+    if (data.player != null) {
+        $("#playerHp").text(data.player.fields.hp)
+    }
+    if (data.opponent != null) {
+        $("#opponentHp").text(data.opponent.fields.hp)
+    }
+    if (data.battle != null) {
+        $("#turnNumber").text(data.battle.fields.turnNumber)
+    }
 }
 
 // Below functions display the correct parts of the page for each
