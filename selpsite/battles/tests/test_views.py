@@ -78,7 +78,7 @@ class BattlesViewsTestCase_Turns(TestCase):
 
     def test_choose_move_bad_player(self):
         self.assertEqual(self.player3.move_set.count(), 0)
-        success = chooseMove(self.player3, 'R')
+        success = chooseMove(self.player3, Move.ROCK)
         self.assertFalse(success)
         self.assertEqual(self.player3.move_set.count(), 0)
 
@@ -86,7 +86,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.battle1.status = Battle.FINISHED
         self.battle1.save()
         self.assertEqual(self.player2.move_set.count(), 1)
-        success = chooseMove(self.player2, 'R')
+        success = chooseMove(self.player2, Move.ROCK)
         self.assertFalse(success)
         self.assertEqual(self.player2.move_set.count(), 1)
         self.assertEqual(self.battle1.status, Battle.FINISHED)
@@ -102,14 +102,14 @@ class BattlesViewsTestCase_Turns(TestCase):
     def test_choose_move_good(self):
         self.assertEqual(self.battle1.turnNumber, 1)
         self.assertEqual(self.player1.move_set.count(), 1)
-        success = chooseMove(self.player1, 'R')
+        success = chooseMove(self.player1, Move.ROCK)
         self.assertTrue(success)
         self.assertEqual(self.player1.move_set.count(), 2)
         
         move = self.player1.move_set.first()
         self.assertEqual(move.player, self.player1)
         self.assertEqual(move.moveNo, 1)
-        self.assertEqual(move.moveUsed, 'R')
+        self.assertEqual(move.moveUsed, Move.ROCK)
 
     def test_calculate_turn_bad_player1_none(self):
         self.player1.currentMove = self.move1
@@ -488,7 +488,7 @@ class BattleAjaxViewsTestCase(TestCase):
         # No playerId given
         response = self.client.post(
             "{url}?moveChoice={move}".format(url=reverse('chooseMove'),
-                                         move='R'))
+                                         move=Move.ROCK))
         # No moveChoice given
         playerId = self.player3.pk
         response = self.client.post(
@@ -509,7 +509,7 @@ class BattleAjaxViewsTestCase(TestCase):
             "{url}?playerId={id}&moveChoice={move}".format(
                                          url=reverse('chooseMove'),
                                          id=playerId,
-                                         move='R'))
+                                         move=Move.ROCK))
         self.assertEqual(response.status_code, 404)
         # Not logged in as user of playerId
         playerId = self.player2.pk
@@ -517,7 +517,7 @@ class BattleAjaxViewsTestCase(TestCase):
             "{url}?playerId={id}&moveChoice={move}".format(
                                          url=reverse('chooseMove'),
                                          id=playerId,
-                                         move='R'))
+                                         move=Move.ROCK))
         self.assertEqual(response.status_code, 403)
         # Player is not in a battle
         playerId = self.player3.pk
@@ -525,7 +525,7 @@ class BattleAjaxViewsTestCase(TestCase):
             "{url}?playerId={id}&moveChoice={move}".format(
                                          url=reverse('chooseMove'),
                                          id=playerId,
-                                         move='R'))
+                                         move=Move.ROCK))
         self.assertEqual(response.status_code, 400)
 
     def test_ajax_choose_move_view_good(self):
@@ -544,7 +544,7 @@ class BattleAjaxViewsTestCase(TestCase):
             "{url}?playerId={id}&moveChoice={move}".format(
                                          url=reverse('chooseMove'),
                                          id=playerId,
-                                         move='R'))
+                                         move=Move.ROCK))
         self.assertEqual(response.status_code, 200)
 
         self.player1 = Player.objects.get(user=self.user1)
@@ -553,5 +553,5 @@ class BattleAjaxViewsTestCase(TestCase):
         self.assertNotEqual(move, lastMove)
         self.assertEqual(Move.objects.count(), moves + 1)
         self.assertEqual(move.player, self.player1)
-        self.assertEqual(move.moveUsed, 'R')
+        self.assertEqual(move.moveUsed, Move.ROCK)
         self.assertEqual(move.moveNo, turnNumber)
