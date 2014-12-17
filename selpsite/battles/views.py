@@ -29,16 +29,19 @@ def ajaxCreatePlayerView(request):
 # View for actually starting a battle via ajax
 def ajaxStartBattleView(request):
     # Check user is logged in
+    print("1")
     if (not request.user.is_authenticated()):
         return HttpResponseForbidden()
     # and sending a POST request
     if (not request.method == 'POST'):
         return HttpResponseBadRequest()
+    print("2")
     # With a playerId attatched
-    if (not 'playerId' in request.GET):
+    if (not 'playerId' in request.POST):
         return HttpResponseBadRequest()
+    print("3")
 
-    playerId = request.GET['playerId']
+    playerId = request.POST['playerId']
     # Check the playerId they sent exists
     player = get_object_or_404(Player, pk=playerId)
     # Check the user is logged in as the user of the sent player
@@ -47,6 +50,7 @@ def ajaxStartBattleView(request):
     # and that their player is not in a battle
     if (player.isInBattle()):
         return HttpResponseBadRequest()
+    print("4")
 
     # Try to join/create a battle
     success = joinBattle(player)
@@ -65,12 +69,12 @@ def ajaxChooseMoveView(request):
     if (not request.method == 'POST'):
         return HttpResponseBadRequest()
     # With a playerId and moveChoice attatched
-    if (not 'playerId' in request.GET or 
-        not 'moveChoice' in request.GET):
+    if (not 'playerId' in request.POST or 
+        not 'moveChoice' in request.POST):
         return HttpResponseBadRequest()
 
-    playerId = request.GET['playerId']
-    moveChoice = request.GET['moveChoice']
+    playerId = request.POST['playerId']
+    moveChoice = request.POST['moveChoice']
     # Check move sent is valid
     valid = False
     for choice in Move.MOVE_CHOICES:
