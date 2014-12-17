@@ -9,8 +9,23 @@ from django.db.models import Q
 from models import Battle, Player
 from django.core import serializers
 
+# View for displaying the start battle page
 def startBattleView(request):
     return render(request, 'battles/startBattle.html')
+
+# View for creating a player object in preparation for starting a 
+# battle
+def ajaxCreatePlayerView(request):
+    # Check user is logged in
+    if (not request.user.is_authenticated()):
+        return HttpResponseForbidden()
+    # and sending a POST request
+    if (not request.method == 'POST'):
+        return HttpResponseBadRequest()
+
+    player = Player.objects.create(user=request.user);
+    return HttpResponse(player.pk);
+
 
 def ajaxGetBattleDetailsView(request):
     # Check user is logged in
