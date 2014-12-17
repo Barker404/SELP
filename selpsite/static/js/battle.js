@@ -39,13 +39,12 @@ $(document).ready(function() {
         startBattle();
     });
     $('.move').click(function() {
-        choice = $(this).attr('move')
+        choice = $(this).attr('choice')
         chooseMove(choice)
     });
 });
 
 function startBattle() {
-    alert("To be implemented");
     createPlayer();
 }
 
@@ -76,6 +75,8 @@ function chooseMove(choice) {
         {'playerId': playerId, 'chosenMove': choice}, 
         function(data){
             // Check response http status code
+            choiceMade = true;
+            displayNewPageParts();
     });
 }
 
@@ -88,9 +89,8 @@ function getUpdatedDetails() {
 
         var oldStatus = status;
         status = data.battle.fields.status;
-        alert(status);
         if (oldStatus != status) {
-            displayNewPageParts();
+            displayNewPageParts(status);
         }
     });
 }
