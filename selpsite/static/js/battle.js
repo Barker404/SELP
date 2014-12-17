@@ -47,22 +47,6 @@ $(document).ready(function() {
 function startBattle() {
     alert("To be implemented");
     createPlayer();
-    success = false;
-    while(!success) {
-        $.getJSON('/battle/startBattle/', 
-            {'playerId': playerId}, 
-            function(data){
-                // Check response http status code
-                if (data == "success") {
-                    success == true;
-                }
-                else {
-                    alert("bad join attempt");
-                    // Error message?
-                }
-        });
-    }
-    time = setInterval(getUpdatedDetails, UPDATE_PERIOD);
 }
 
 // Uses jQuery ajax to get the ID for a new player
@@ -70,11 +54,25 @@ function createPlayer() {
     $.post('/battle/createPlayer/', function(data) {
         // Check response http status code
         playerId = parseInt(data);
+        tryJoinBattle();
+    });
+}
+
+function tryJoinBattle() {
+    alert(playerId);
+    $.post('/battle/startBattle/', {'playerId': playerId}, function(data){
+            // Check response http status code
+            if (data == "success") {
+                time = setInterval(getUpdatedDetails, UPDATE_PERIOD);
+            } else {
+                alert("bad join attempt");
+                tryJoinBattle();
+            }
     });
 }
 
 function chooseMove(choice) {
-    $.getJSON('/battle/chooseMove/', 
+    $.post('/battle/chooseMove/', 
         {'playerId': playerId, 'chosenMove': choice}, 
         function(data){
             // Check response http status code
