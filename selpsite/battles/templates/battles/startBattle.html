@@ -7,13 +7,22 @@
     {# Information that will always be visible, and need only be updated #}
     <ul>
       <li>
-        <div id="player">Player</div>
+        <div id="player">
+          <p><b>Player</b></p>
+          <b>HP:</b><i id="playerHp"></i>
+        </div>
       </li>
       <li>
-        <div id="general">General</div>
+        <div id="general">
+          <p><b>General</b></p>
+          <b>Turn No:</b><i id="turnNumber"></i>
+          </div>
       </li>
       <li>
-        <div id="opponent">Opponent</div>
+        <div id="opponent">
+          <p><b>Opponent</b></p>
+          <b>HP:</b><i id="opponentHp"></i>
+          </div>
       </li>
     </ul>
   </div>
@@ -45,7 +54,7 @@
       <b>Calculating results...</b>
     </div>
     <div hidden id="finished">
-
+      <b>FINISHED!</b>
     </div>
     <div hidden id="finished">
       <b>An error has occurred :(</b>
