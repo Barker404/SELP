@@ -156,6 +156,10 @@ def chooseMove(player, move):
         not player.currentMove is None):
         return False
 
+    # Check move is valid
+    if (not moveChoice in Move.MOVE_CHOICES):
+        return False
+
     moveMade = player.addMove(move)
 
     success = True
