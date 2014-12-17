@@ -3,8 +3,32 @@
 {% block title %}Battle{% endblock %}
 
 {% block content %}
-  <input type="text" id="playerId">
-  <button type="button" id="getStatus">get status</button>
-  <button type="button" onclick="startScrapping()">Start Scrapping</button>
+  <div id="battleInfo">
+    {# Information that will always be visible, and need only be updated #}
+  </div>
+  <div id="userInput">
+    {# Blocks that will be shown seperately at each stage of the battle #}
+    <div id="preBattle">
+      <button type="button" id="startBattle">Start Battle</button>
+    </div>
+    <div hidden id="joining">
+      <b>Looking for opponent...</b>
+    </div>
+    <div hidden id="moveChoice">
+
+    </div>
+    <div hidden id="waiting">
+      <b>Waiting for other player's choice...</b>
+    </div>
+    <div hidden id="calculating">
+      <b>Calculating results...</b>
+    </div>
+    <div hidden id="finished">
+
+    </div>
+    <div hidden id="finished">
+      <b>An error has occurred :(</b>
+    </div>
+  </div>
 
 {% endblock %}
