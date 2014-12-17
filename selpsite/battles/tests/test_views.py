@@ -405,3 +405,64 @@ class BattleAjaxViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(int(response.content), players + 1)
         self.assertEqual(Player.objects.count(), players + 1)
+
+    def test_ajax_start_battle_view_bad(self):
+        # Not logged in
+        response = self.client.post(reverse('startBattle'))
+        self.assertEqual(response.status_code, 403)
+        
+        loggedIn = self.client.login(username='user1', password='user1Pass')
+        self.assertTrue(loggedIn)
+        
+        # Get
+        response = self.client.get(reverse('startBattle'), {})
+        self.assertEqual(response.status_code, 400)
+        # No playerId given
+        response = self.client.post(reverse('startBattle'))
+        self.assertEqual(response.status_code, 400)
+        # playerID doesn't exist
+        playerId = 4
+        self.assertFalse(Player.objects.filter(pk=playerId).exists())
+        response = self.client.post(
+            "{url}?playerId={id}".format(url=reverse('startBattle'),
+                                         id=playerId))
+        self.assertEqual(response.status_code, 404)
+        # Not logged in as user of playerId
+        playerId = self.player2.pk
+        response = self.client.post(
+            "{url}?playerId={id}".format(url=reverse('startBattle'),
+                                         id=playerId))
+        self.assertEqual(response.status_code, 403)
+        # Player is already in a battle
+        playerId = self.player1.pk
+        response = self.client.post(
+            "{url}?playerId={id}".format(url=reverse('startBattle'),
+                                         id=playerId))
+        self.assertEqual(response.status_code, 400)
+
+    def test_ajax_start_battle_view_good(self):
+        # Will only respond with "failure" in cases where multiple players are trying
+        # to create battles at once
+        # So we only test success case for simplicity
+        self.assertFalse(self.player3.isInBattle())
+        battles = Battle.objects.count()
+
+        loggedIn = self.client.login(username='staff', password='staffPass')
+        self.assertTrue(loggedIn)
+
+        playerId = self.player3.pk
+        response = self.client.post(
+            "{url}?playerId={id}".format(url=reverse('startBattle'),
+                                         id=playerId))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, "success")
+
+        self.player3 = Player.objects.get(user=self.user3)
+
+        self.assertTrue(self.player3.isInBattle())
+        self.assertEqual(Battle.objects.count(), battles + 1)
+        battle = self.player3.getBattle()
+        onePlayer = (((battle.player1 is None) and (not battle.player2 is None)) or
+                    ((not battle.player1 is None) and (battle.player2 is None)))
+        self.assertTrue(onePlayer)
+        
