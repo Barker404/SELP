@@ -423,7 +423,7 @@ class BattleAjaxViewsTestCase(TestCase):
         self.assertTrue(loggedIn)
         
         # Get
-        response = self.client.get(reverse('startBattle'), {})
+        response = self.client.post(reverse('startBattle'), {})
         self.assertEqual(response.status_code, 400)
         # No playerId given
         response = self.client.post(reverse('startBattle'))
@@ -431,21 +431,15 @@ class BattleAjaxViewsTestCase(TestCase):
         # playerID doesn't exist
         playerId = 4
         self.assertFalse(Player.objects.filter(pk=playerId).exists())
-        response = self.client.post(
-            "{url}?playerId={id}".format(url=reverse('startBattle'),
-                                         id=playerId))
+        response = self.client.post(reverse('startBattle'), { 'playerId' : playerId })
         self.assertEqual(response.status_code, 404)
         # Not logged in as user of playerId
         playerId = self.player2.pk
-        response = self.client.post(
-            "{url}?playerId={id}".format(url=reverse('startBattle'),
-                                         id=playerId))
+        response = self.client.post(reverse('startBattle'), { 'playerId' : playerId })
         self.assertEqual(response.status_code, 403)
         # Player is already in a battle
         playerId = self.player1.pk
-        response = self.client.post(
-            "{url}?playerId={id}".format(url=reverse('startBattle'),
-                                         id=playerId))
+        response = self.client.post(reverse('startBattle'), { 'playerId' : playerId })
         self.assertEqual(response.status_code, 400)
 
     def test_ajax_start_battle_view_good(self):
@@ -459,9 +453,7 @@ class BattleAjaxViewsTestCase(TestCase):
         self.assertTrue(loggedIn)
 
         playerId = self.player3.pk
-        response = self.client.post(
-            "{url}?playerId={id}".format(url=reverse('startBattle'),
-                                         id=playerId))
+        response = self.client.post(reverse('startBattle'), { 'playerId' : playerId })
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, "success")
 
@@ -486,46 +478,36 @@ class BattleAjaxViewsTestCase(TestCase):
         response = self.client.get(reverse('chooseMove'), {})
         self.assertEqual(response.status_code, 400)
         # No playerId given
-        response = self.client.post(
-            "{url}?moveChoice={move}".format(url=reverse('chooseMove'),
-                                         move=Move.ROCK))
+        response = self.client.post(reverse('chooseMove'), 
+                                    { 'moveChoice' : Move.ROCK })
         # No moveChoice given
         playerId = self.player3.pk
-        response = self.client.post(
-            "{url}?playerId={id}".format(url=reverse('chooseMove'),
-                                         id=playerId))
+        response = self.client.post(reverse('chooseMove'), 
+                                    { 'playerId' : playerId })
         self.assertEqual(response.status_code, 400)
         # moveChoice is invalid
-        response = self.client.post(
-            "{url}?playerId={id}&moveChoice={move}".format(
-                                         url=reverse('chooseMove'),
-                                         id=playerId,
-                                         move='lol'))
+        response = self.client.post(reverse('chooseMove'), 
+                                    { 'playerId' : playerId,
+                                    'moveChoice' : 'lol' })
         self.assertEqual(response.status_code, 400)
         # playerID doesn't exist
         playerId = 4
         self.assertFalse(Player.objects.filter(pk=playerId).exists())
-        response = self.client.post(
-            "{url}?playerId={id}&moveChoice={move}".format(
-                                         url=reverse('chooseMove'),
-                                         id=playerId,
-                                         move=Move.ROCK))
+        response = self.client.post(reverse('chooseMove'), 
+                                    { 'playerId' : playerId,
+                                    'moveChoice' : Move.ROCK })
         self.assertEqual(response.status_code, 404)
         # Not logged in as user of playerId
         playerId = self.player2.pk
-        response = self.client.post(
-            "{url}?playerId={id}&moveChoice={move}".format(
-                                         url=reverse('chooseMove'),
-                                         id=playerId,
-                                         move=Move.ROCK))
+        response = self.client.post(reverse('chooseMove'), 
+                                    { 'playerId' : playerId,
+                                    'moveChoice' : Move.ROCK })
         self.assertEqual(response.status_code, 403)
         # Player is not in a battle
         playerId = self.player3.pk
-        response = self.client.post(
-            "{url}?playerId={id}&moveChoice={move}".format(
-                                         url=reverse('chooseMove'),
-                                         id=playerId,
-                                         move=Move.ROCK))
+        response = self.client.post(reverse('chooseMove'), 
+                                    { 'playerId' : playerId,
+                                    'moveChoice' : Move.ROCK })
         self.assertEqual(response.status_code, 400)
 
     def test_ajax_choose_move_view_good(self):
@@ -540,11 +522,9 @@ class BattleAjaxViewsTestCase(TestCase):
         self.assertTrue(loggedIn)
 
         playerId = self.player1.pk
-        response = self.client.post(
-            "{url}?playerId={id}&moveChoice={move}".format(
-                                         url=reverse('chooseMove'),
-                                         id=playerId,
-                                         move=Move.ROCK))
+        response = self.client.post(reverse('chooseMove'), 
+                                    { 'playerId' : playerId,
+                                    'moveChoice' : Move.ROCK })
         self.assertEqual(response.status_code, 200)
 
         self.player1 = Player.objects.get(user=self.user1)
