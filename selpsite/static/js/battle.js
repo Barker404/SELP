@@ -1,5 +1,5 @@
 var status = "0";
-var playerId = "0";
+var playerId = 0;
 var choiceMade = false;
 
 // Enum for battle status values 
@@ -34,10 +34,6 @@ $(document).ready(function() {
     $('#startBattle').click(function() {
         startBattle();
     });
-    $('#getStatus').click(function() {
-        playerId = $("#playerId").val();
-        getUpdatedDetails();
-    });
 });
 
 // AJAX calls required:
@@ -47,10 +43,17 @@ $(document).ready(function() {
 
 function startBattle() {
     alert("To be implemented");
+    createPlayer();
     // gonna loop
     // Try to join a game, keep trying if it fails
 }
 
+// Uses jQuery ajax to get the ID for a new player
+function createPlayer() {
+    $.post('/battle/createPlayer/', function(data) {
+        playerId = parseInt(data);
+    });
+}
 function doBattle() {
     // more looping
     // keep checking that game status, update screen when it changes
