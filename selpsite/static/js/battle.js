@@ -48,6 +48,21 @@ $(document).ready(function() {
 function startBattle() {
     alert("To be implemented");
     createPlayer();
+    success = false;
+    while(!success) {
+        $.getJSON('/battle/startBattle/', 
+            {'playerId': playerId}, 
+            function(data){
+                // Check response http status code
+                if (data == "success") {
+                    success == true;
+                }
+                else {
+                    // Error message?
+                }
+        });
+    }
+    getUpdatedDetails();
 }
 
 // Uses jQuery ajax to get the ID for a new player
