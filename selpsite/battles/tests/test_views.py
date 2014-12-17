@@ -379,3 +379,29 @@ class BattleAjaxViewsTestCase(TestCase):
                                          id=playerId))
         self.assertEqual(response.status_code, 200)
         
+    def test_ajax_create_player_view_bad(self):
+        players = Player.objects.count()
+
+        # Not logged in
+        response = self.client.post(reverse('createPlayer'))
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(Player.objects.count(), players)
+        
+        loggedIn = self.client.login(username='user1', password='user1Pass')
+        self.assertTrue(loggedIn)
+        
+        # Get
+        response = self.client.get(reverse('createPlayer'), {})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(Player.objects.count(), players)
+
+    def test_ajax_create_player_view_good(self):
+        players = Player.objects.count()
+
+        loggedIn = self.client.login(username='user1', password='user1Pass')
+        self.assertTrue(loggedIn)
+
+        response = self.client.post(reverse('createPlayer'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(int(response.content), players + 1)
+        self.assertEqual(Player.objects.count(), players + 1)
