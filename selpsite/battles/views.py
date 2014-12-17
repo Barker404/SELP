@@ -29,17 +29,14 @@ def ajaxCreatePlayerView(request):
 # View for actually starting a battle via ajax
 def ajaxStartBattleView(request):
     # Check user is logged in
-    print("1")
     if (not request.user.is_authenticated()):
         return HttpResponseForbidden()
     # and sending a POST request
     if (not request.method == 'POST'):
         return HttpResponseBadRequest()
-    print("2")
     # With a playerId attatched
     if (not 'playerId' in request.POST):
         return HttpResponseBadRequest()
-    print("3")
 
     playerId = request.POST['playerId']
     # Check the playerId they sent exists
@@ -50,7 +47,6 @@ def ajaxStartBattleView(request):
     # and that their player is not in a battle
     if (player.isInBattle()):
         return HttpResponseBadRequest()
-    print("4")
 
     # Try to join/create a battle
     success = joinBattle(player)
