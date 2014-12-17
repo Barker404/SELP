@@ -527,3 +527,31 @@ class BattleAjaxViewsTestCase(TestCase):
                                          id=playerId,
                                          move='R'))
         self.assertEqual(response.status_code, 400)
+
+    def test_ajax_choose_move_view_good(self):
+        # The details of the actual move creation are covered in other tests
+        # Here, just test that the view gets to that point and creates a move
+        self.assertTrue(self.player1.isInBattle())
+        moves = Move.objects.count()
+        lastMove = self.player1.currentMove
+        turnNumber = self.player1.getBattle().turnNumber
+
+        loggedIn = self.client.login(username='user1', password='user1Pass')
+        self.assertTrue(loggedIn)
+
+        playerId = self.player1.pk
+        response = self.client.post(
+            "{url}?playerId={id}&moveChoice={move}".format(
+                                         url=reverse('chooseMove'),
+                                         id=playerId,
+                                         move='R'))
+        self.assertEqual(response.status_code, 200)
+
+        self.player1 = Player.objects.get(user=self.user1)
+
+        move = self.player1.currentMove
+        self.assertNotEqual(move, lastMove)
+        self.assertEqual(Move.objects.count(), moves + 1)
+        self.assertEqual(move.player, self.player1)
+        self.assertEqual(move.moveUsed, 'R')
+        self.assertEqual(move.moveNo, turnNumber)
