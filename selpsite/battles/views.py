@@ -56,6 +56,46 @@ def ajaxStartBattleView(request):
     else:
         return HttpResponse("failure")
 
+# View for choosing a move to use via ajax
+def ajaxChooseMoveView(request):
+    # Check user is logged in
+    if (not request.user.is_authenticated()):
+        return HttpResponseForbidden()
+    # and sending a POST request
+    if (not request.method == 'POST'):
+        return HttpResponseBadRequest()
+    # With a playerId and moveChoice attatched
+    if (not 'playerId' in request.GET or 
+        not 'moveChoice' in request.GET):
+        return HttpResponseBadRequest()
+
+    playerId = request.GET['playerId']
+    moveChoice = request.GET['moveChoice']
+    # Check move sent is valid
+    valid = False
+    for choice in Move.MOVE_CHOICES:
+        if (choice[0] == moveChoice):
+            valid = True
+            break
+    if (not valid):
+        return HttpResponseBadRequest()
+        
+    # Check the playerId they sent exists
+    player = get_object_or_404(Player, pk=playerId)
+    # Check the user is logged in as the user of the sent player
+    if (player.user != request.user):
+        return HttpResponseForbidden()
+    # and that their player is in a battle
+    if (not player.isInBattle()):
+        return HttpResponseBadRequest()
+
+    success = chooseMove(player, moveChoice)
+    if (success):
+        return HttpResponse()
+    else:
+        return HttpResponseBadRequest()
+
+
 def ajaxGetBattleDetailsView(request):
     # Check user is logged in
     if (not request.user.is_authenticated()):
@@ -145,6 +185,10 @@ def joinBattle(player):
         return True
 
 def chooseMove(player, move):
+    # Most of the checks in this function are done in the calling view
+    # But we do them anyway, just to be sure 
+    # (or in case it's called from somewhere else)
+
     # Check the player is in a battle
     playerNo = player.getPlayerNumber()
     if (playerNo == 0):

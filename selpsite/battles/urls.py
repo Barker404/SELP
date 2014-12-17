@@ -5,6 +5,7 @@ from battles import views
 urlpatterns = patterns('',
     url(r'createPlayer', views.ajaxCreatePlayerView, name='createPlayer'),
     url(r'startBattle', views.ajaxStartBattleView, name='startBattle'),
+    url(r'chooseMove', views.ajaxChooseMoveView, name='chooseMove'),
     url(r'getBattleDetails', views.ajaxGetBattleDetailsView, name='getBattleDetails'),
     url(r'^$', views.battleView, name='battle'),
 )
