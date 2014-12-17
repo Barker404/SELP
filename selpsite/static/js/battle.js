@@ -34,6 +34,10 @@ $(document).ready(function() {
     $('#startBattle').click(function() {
         startBattle();
     });
+    $('.move').click(function() {
+        choice = $(this).attr('move')
+        chooseMove(choice)
+    });
 });
 
 // AJAX calls required:
@@ -44,13 +48,12 @@ $(document).ready(function() {
 function startBattle() {
     alert("To be implemented");
     createPlayer();
-    // gonna loop
-    // Try to join a game, keep trying if it fails
 }
 
 // Uses jQuery ajax to get the ID for a new player
 function createPlayer() {
     $.post('/battle/createPlayer/', function(data) {
+        // Check response http status code
         playerId = parseInt(data);
     });
 }
@@ -67,10 +70,19 @@ function doBattle() {
  
 }
 
+function chooseMove(choice) {
+    $.getJSON('/battle/chooseMove/', 
+        {'playerId': playerId, 'chosenMove': choice}, 
+        function(data){
+            // Check response http status code
+    });
+}
+
 // Uses jQuery ajax to get the game status
 function getUpdatedDetails() {
     $.getJSON('/battle/getBattleDetails/', {'playerId': playerId}, function(data){
        
+        // Check response http status code
         displayUpdatedDetails(data);
 
         var oldStatus = status;
