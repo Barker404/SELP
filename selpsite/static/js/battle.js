@@ -1,6 +1,10 @@
 var status = "0";
 var playerId = 0;
 var choiceMade = false;
+// How often to update information (ms)
+var UPDATE_PERIOD = 1000;
+// Timer that makes the update function run periodically
+var timer;
 
 // Enum for battle status values 
 StatusEnum = {
@@ -58,7 +62,7 @@ function startBattle() {
                 }
         });
     }
-    getUpdatedDetails();
+    time = setInterval(getUpdatedDetails, UPDATE_PERIOD);
 }
 
 // Uses jQuery ajax to get the ID for a new player
@@ -67,18 +71,6 @@ function createPlayer() {
         // Check response http status code
         playerId = parseInt(data);
     });
-}
-function doBattle() {
-    // more looping
-    // keep checking that game status, update screen when it changes
-    // Every cycle might as well update the hp etc
-    // When "status" actually changes, then show new parts of screen
-
-    // There will be 3 states:
-    // Choosing a move
-    // Waiting for the other player/server calculation
-    // Game finished
- 
 }
 
 function chooseMove(choice) {
@@ -98,7 +90,7 @@ function getUpdatedDetails() {
 
         var oldStatus = status;
         status = data.battle.fields.status;
-
+        alert(status);
         if (oldStatus != status) {
             displayNewPageParts();
         }
