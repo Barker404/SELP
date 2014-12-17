@@ -29,8 +29,8 @@ function statusToString(status) {
     }
 }
 
-// Start a battle
 $(document).ready(function() {
+    // Start a battle
     $('#startBattle').click(function() {
         startBattle();
     });
@@ -77,7 +77,9 @@ function getUpdatedDetails() {
         status = data.battle.fields.status;
 
         if (oldStatus != status) {
+            hideAll();
             switch(status) {
+                // Display parts of the page based on the status
                 case StatusEnum.WAITING_FOR_PLAYER:
                     displayWaitingForPlayer();
                     break;
@@ -89,11 +91,13 @@ function getUpdatedDetails() {
                     }
                     break;
                 case StatusEnum.CALCULATING:
-                    return displayCalculating();
+                    displayCalculating();
                     break;
                 case StatusEnum.FINISHED:
-                    return displayFinished();
+                    displayFinished();
                     break;
+                default:
+                    displayError();
             }
         }
     });
@@ -107,25 +111,42 @@ function displayUpdatedDetails() {
 // Below functions display the correct parts of the page for each
 // point in a battle
 
-function displayWaitingForPlayer() {
+// Hides all of the parts of the page which can be shown with 
+// below functions
+function hideAll() {
+    $("#preBattle").hide();
+    $("#joining").hide();
+    $("#moveChoice").hide();
+    $("#waiting").hide();
+    $("#calculating").hide();
+    $("#finished").hide();
+    $("#error").hide();
+}
 
+function displayPreBattle() {
+    $("#preBattle").show();
+}
+function displayWaitingForPlayer() {
+    $("#joining").show();
 }
 function displayWaitingForChoice() {
-
+    $("#moveChoice").show();
 }
 // This function is for the display when the player has made a choice,
 // but the game is still "waiting for player choice" - the other
 // player has not made a choice yet
 function displayWaitingForOtherChoice() {
-    
+    $("#waiting").show();
 }
 function displayCalculating() {
-    
+    $("#calculating").show();
 }
 function displayFinished() {
-    
+    $("#finished").show();
 }
-
+function displayError() {
+    $("#error").show();
+}
 
 // Code below is for avoiding cross-site request forgery by adding
 // the crsf token to ajax requests
