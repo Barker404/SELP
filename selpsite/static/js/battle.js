@@ -1,19 +1,39 @@
+var status;
+var playerId;
+
+// Enum for battle status values 
+StatusEnum = {
+    WAITING_FOR_PLAYER : 1,
+    WAITING_FOR_CHOICE : 2,
+    CALCULATING : 3,
+    FINISHED : 4
+}
+
+function statusToString(status) {
+    switch(status) {
+        case StatusEnum.WAITING_FOR_PLAYER:
+            return 'Waiting for another player';
+            break;
+        case StatusEnum.WAITING_FOR_CHOICE:
+            return 'Waiting for player choices';
+            break;
+        case StatusEnum.CALCULATING:
+            return 'Calculating results');
+            break;
+        case StatusEnum.FINISHED:
+            return 'Battle finished';
+            break;
+    }
+}
+
 // Start a battle
 $(document).ready(function() {
     $('#startBattle').click(function() {
-        startBattle()
+        startBattle();
     });
-});
-
-// Get an update
-$(document).ready(function() {
     $('#getStatus').click(function() {
-        id = $('#playerId').val()
-        $.get('/battle/getBattleStatus/', {playerId: id}, function(data){
-           alert(data.battle.fields.status)
-           status = JSON.parse(data);
-           alert(status.battle.fields.status);
-        });
+        playerIda = $("#playerId").val();
+        getUpdatedStatus();
     });
 });
 
@@ -21,7 +41,7 @@ $(document).ready(function() {
 // 1. POST (?) trying to join a game
 // 2. GET status
 // 3. POST move choice
-    
+
 function startBattle() {
     alert("To be implemented");
     // gonna loop
@@ -39,4 +59,56 @@ function doBattle() {
     // Waiting for the other player/server calculation
     // Game finished
  
+}
+
+// Uses jQuery ajax to get the game status
+function getUpdatedDetails() {
+    $.get('/battle/getBattleStatus/', {'playerId': playerId}, function(data){
+       
+        displayUpdatedStatus(data)
+
+        var oldStatus = status;
+        status = data.battle.fields.status;
+        if (oldStatus != status) {
+            switch(status) {
+                case StatusEnum.WAITING_FOR_PLAYER:
+                    return 'Waiting for another player';
+                    break;
+                case StatusEnum.WAITING_FOR_CHOICE:
+                    return 'Waiting for player choices';
+                    break;
+                case StatusEnum.CALCULATING:
+                    return 'Calculating results');
+                    break;
+                case StatusEnum.FINISHED:
+                    return 'Battle finished';
+                    break;
+            }
+        }
+
+
+    });
+}
+
+// Below functions display the correct parts of the page for each
+// point in a battle
+
+function displayUpdatedDetails() {
+
+}
+
+function displayWaitingForChoice() {
+
+}
+// This function is for the display when the player has made a choice,
+// but the game is still "waiting for player choice" - the other
+// player has not made a choice yet
+function displayWaitingForOtherChoice() {
+    
+}
+function displayCalculating() {
+    
+}
+function displayFinished() {
+    
 }
