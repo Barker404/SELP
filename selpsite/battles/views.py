@@ -122,8 +122,9 @@ def ajaxGetBattleDetailsView(request):
     # serialization requires a list of objects
     battleData = serializers.serialize('json', [player.getBattle(),])
     playerData = serializers.serialize('json', [player,])
-    opponentData = serializers.serialize('json', [player.opponent,])
-    
+    if (not player.opponent is None):
+        opponentData = serializers.serialize('json', [player.opponent,])
+
     # Add to dictionary
     # Since we want to output individual objects within a single 
     # larger object, we know reload each object and take the first item 
@@ -131,14 +132,19 @@ def ajaxGetBattleDetailsView(request):
     responseData = {}
     responseData['battle'] = json.loads(battleData)[0]
     responseData['player'] = json.loads(playerData)[0]
-    responseData['opponent'] = json.loads(opponentData)[0]
+    if (not player.opponent is None):
+        responseData['opponent'] = json.loads(opponentData)[0]
+    else:
+        responseData['opponent'] = None
 
     # Add the players' usernames
     responseData['player']['username'] = player.user.username
-    responseData['opponent']['username'] = player.opponent.user.username
+    if (not player.opponent is None):
+        responseData['opponent']['username'] = player.opponent.user.username
 
     # Finally, dump the full object
     serializedData = json.dumps(responseData)
+    print(serializedData)
     return HttpResponse(serializedData, 
                         content_type="application/json")
 
