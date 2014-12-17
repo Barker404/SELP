@@ -58,7 +58,6 @@ function createPlayer() {
 }
 
 function tryJoinBattle() {
-    alert(playerId);
     $.post('/battle/startBattle/', {'playerId': playerId}, function(data){
             // Check response http status code
             if (data == "success") {
@@ -72,7 +71,7 @@ function tryJoinBattle() {
 
 function chooseMove(choice) {
     $.post('/battle/chooseMove/', 
-        {'playerId': playerId, 'chosenMove': choice}, 
+        {'playerId': playerId, 'moveChoice': choice}, 
         function(data){
             // Check response http status code
             choiceMade = true;
@@ -90,14 +89,14 @@ function getUpdatedDetails() {
         var oldStatus = status;
         status = data.battle.fields.status;
         if (oldStatus != status) {
-            displayNewPageParts(status);
+            displayNewPageParts();
         }
     });
 }
 
 
 // Display parts of the page based on the status
-function displayNewPageParts(status) {
+function displayNewPageParts() {
     hideAll();
     switch(status) {
         case StatusEnum.WAITING_FOR_PLAYER:
