@@ -26,6 +26,36 @@ def ajaxCreatePlayerView(request):
     player = Player.objects.create(user=request.user);
     return HttpResponse(player.pk);
 
+# View for actually starting a battle via ajax
+def ajaxStartBattleView(request):
+    # Check user is logged in
+    if (not request.user.is_authenticated()):
+        return HttpResponseForbidden()
+    # and sending a POST request
+    if (not request.method == 'POST'):
+        return HttpResponseBadRequest()
+    # With a playerId attatched
+    if (not 'playerId' in request.GET):
+        return HttpResponseBadRequest()
+
+    playerId = request.GET['playerId']
+    # Check the playerId they sent exists
+    player = get_object_or_404(Player, pk=playerId)
+    # Check the user is logged in as the user of the sent player
+    if (player.user != request.user):
+        return HttpResponseForbidden()
+    # and that their player is not in a battle
+    if (player.isInBattle()):
+        return HttpResponseBadRequest()
+
+    # Try to join/create a battle
+    success = joinBattle(player)
+    # Respond with success
+    if (success):
+        return HttpResponse("success")
+    else:
+        return HttpResponse("failure")
+
 def ajaxGetBattleDetailsView(request):
     # Check user is logged in
     if (not request.user.is_authenticated()):
