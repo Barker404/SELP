@@ -1,12 +1,13 @@
-var status;
-var playerId;
+var status = "0";
+var playerId = "0";
+var choiceMade = false;
 
 // Enum for battle status values 
 StatusEnum = {
-    WAITING_FOR_PLAYER : 1,
-    WAITING_FOR_CHOICE : 2,
-    CALCULATING : 3,
-    FINISHED : 4
+    WAITING_FOR_PLAYER : "1",
+    WAITING_FOR_CHOICE : "2",
+    CALCULATING : "3",
+    FINISHED : "4"
 }
 
 function statusToString(status) {
@@ -18,11 +19,13 @@ function statusToString(status) {
             return 'Waiting for player choices';
             break;
         case StatusEnum.CALCULATING:
-            return 'Calculating results');
+            return 'Calculating results';
             break;
         case StatusEnum.FINISHED:
             return 'Battle finished';
             break;
+        default: 
+            return "Unknown Status";
     }
 }
 
@@ -32,8 +35,8 @@ $(document).ready(function() {
         startBattle();
     });
     $('#getStatus').click(function() {
-        playerIda = $("#playerId").val();
-        getUpdatedStatus();
+        playerId = $("#playerId").val();
+        getUpdatedDetails();
     });
 });
 
@@ -63,40 +66,46 @@ function doBattle() {
 
 // Uses jQuery ajax to get the game status
 function getUpdatedDetails() {
-    $.get('/battle/getBattleStatus/', {'playerId': playerId}, function(data){
+    $.getJSON('/battle/getBattleStatus/', {'playerId': playerId}, function(data){
        
-        displayUpdatedStatus(data)
+        displayUpdatedDetails(data);
 
         var oldStatus = status;
         status = data.battle.fields.status;
         if (oldStatus != status) {
             switch(status) {
                 case StatusEnum.WAITING_FOR_PLAYER:
-                    return 'Waiting for another player';
+                    displayWaitingForPlayer();
                     break;
                 case StatusEnum.WAITING_FOR_CHOICE:
-                    return 'Waiting for player choices';
+                    if (!choiceMade) {
+                        displayWaitingForChoice();
+                    } else {
+                        displayWaitingForOtherChoice();
+                    }
                     break;
                 case StatusEnum.CALCULATING:
-                    return 'Calculating results');
+                    return displayCalculating();
                     break;
                 case StatusEnum.FINISHED:
-                    return 'Battle finished';
+                    return displayFinished();
                     break;
             }
         }
-
-
     });
+}
+
+// This updates the battle details on the page
+function displayUpdatedDetails() {
+
 }
 
 // Below functions display the correct parts of the page for each
 // point in a battle
 
-function displayUpdatedDetails() {
+function displayWaitingForPlayer() {
 
 }
-
 function displayWaitingForChoice() {
 
 }
