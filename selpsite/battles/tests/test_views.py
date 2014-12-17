@@ -91,6 +91,14 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player2.move_set.count(), 1)
         self.assertEqual(self.battle1.status, Battle.FINISHED)
 
+    def test_choose_move_bad_choice(self):
+        self.assertEqual(self.battle1.turnNumber, 1)
+        self.assertEqual(self.player1.move_set.count(), 1)
+        success = chooseMove(self.player1, 'lol')
+        self.assertFalse(success)
+        self.assertEqual(self.player1.move_set.count(), 1)
+        self.assertEqual(self.battle1.turnNumber, 1)
+
     def test_choose_move_good(self):
         self.assertEqual(self.battle1.turnNumber, 1)
         self.assertEqual(self.player1.move_set.count(), 1)
@@ -465,4 +473,3 @@ class BattleAjaxViewsTestCase(TestCase):
         onePlayer = (((battle.player1 is None) and (not battle.player2 is None)) or
                     ((not battle.player1 is None) and (battle.player2 is None)))
         self.assertTrue(onePlayer)
-        
