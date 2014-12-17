@@ -335,37 +335,37 @@ class BattleAjaxViewsTestCase(TestCase):
         self.move1 = Move.objects.all()[0] # player1 - R
         self.move2 = Move.objects.all()[1] # player2 - P
               
-    def test_ajax_get_battle_status_view_bad(self):
+    def test_ajax_get_battle_details_view_bad(self):
         # Not logged in
-        response = self.client.get(reverse('getBattleStatus'))
+        response = self.client.get(reverse('getBattleDetails'))
         self.assertEqual(response.status_code, 403)
         
         loggedIn = self.client.login(username='staff', password='staffPass')
         self.assertTrue(loggedIn)
         
         # Post
-        response = self.client.post(reverse('getBattleStatus'), {})
+        response = self.client.post(reverse('getBattleDetails'), {})
         self.assertEqual(response.status_code, 400)
         # No playerId given
-        response = self.client.get(reverse('getBattleStatus'))
+        response = self.client.get(reverse('getBattleDetails'))
         self.assertEqual(response.status_code, 400)
         # playerID doesn't exist
         playerId = 4
         self.assertFalse(Player.objects.filter(pk=playerId).exists())
         response = self.client.get(
-            "{url}?playerId={id}".format(url=reverse('getBattleStatus'),
+            "{url}?playerId={id}".format(url=reverse('getBattleDetails'),
                                          id=playerId))
         self.assertEqual(response.status_code, 404)
         # Not logged in as user of playerId
         playerId = self.player1.pk
         response = self.client.get(
-            "{url}?playerId={id}".format(url=reverse('getBattleStatus'),
+            "{url}?playerId={id}".format(url=reverse('getBattleDetails'),
                                          id=playerId))
         self.assertEqual(response.status_code, 403)
         # Player is not in a battle
         playerId = self.player3.pk
         response = self.client.get(
-            "{url}?playerId={id}".format(url=reverse('getBattleStatus'),
+            "{url}?playerId={id}".format(url=reverse('getBattleDetails'),
                                          id=playerId))
         self.assertEqual(response.status_code, 400)
 
@@ -375,7 +375,7 @@ class BattleAjaxViewsTestCase(TestCase):
 
         playerId = self.player1.pk
         response = self.client.get(
-            "{url}?playerId={id}".format(url=reverse('getBattleStatus'),
+            "{url}?playerId={id}".format(url=reverse('getBattleDetails'),
                                          id=playerId))
         self.assertEqual(response.status_code, 200)
         

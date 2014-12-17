@@ -12,7 +12,7 @@ from django.core import serializers
 def startBattleView(request):
     return render(request, 'battles/startBattle.html')
 
-def ajaxGetBattleStatusView(request):
+def ajaxGetBattleDetailsView(request):
     # Check user is logged in
     if (not request.user.is_authenticated()):
         return HttpResponseForbidden()
