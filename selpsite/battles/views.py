@@ -10,7 +10,7 @@ from models import Battle, Player
 from django.core import serializers
 
 # View for displaying the start battle page
-def startBattleView(request):
+def battleView(request):
     return render(request, 'battles/startBattle.html')
 
 # View for creating a player object in preparation for starting a 
@@ -25,7 +25,6 @@ def ajaxCreatePlayerView(request):
 
     player = Player.objects.create(user=request.user);
     return HttpResponse(player.pk);
-
 
 def ajaxGetBattleDetailsView(request):
     # Check user is logged in

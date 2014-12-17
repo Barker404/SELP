@@ -8,8 +8,8 @@ from battles.views import joinBattle, chooseMove, calculateTurn
 
 class BattlesViewsTestCase_Views(TestCase):
 
-    def test_start_battle_view(self):
-        response = self.client.get(reverse('startBattle'))
+    def test_battle_view(self):
+        response = self.client.get(reverse('battle'))
         self.assertEqual(response.status_code, 200)
 
 
