@@ -6,7 +6,7 @@ from django.http import (
                         )
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-from models import Battle, Player
+from models import Battle, Player, Move
 from django.core import serializers
 
 # View for displaying the start battle page
@@ -102,6 +102,7 @@ def ajaxGetBattleDetailsView(request):
     return HttpResponse(serializedData, 
                         content_type="application/json")
 
+
 # Will try to find a game/make one and join it
 # Returns true if the player is now in a battle, else false
 # If true the player should wait for another to join the game
@@ -157,7 +158,12 @@ def chooseMove(player, move):
         return False
 
     # Check move is valid
-    if (not moveChoice in Move.MOVE_CHOICES):
+    valid = False
+    for choice in Move.MOVE_CHOICES:
+        if (choice[0] == move):
+            valid = True
+            break
+    if (not valid):
         return False
 
     moveMade = player.addMove(move)
