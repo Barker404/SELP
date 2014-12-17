@@ -66,7 +66,7 @@ function doBattle() {
 
 // Uses jQuery ajax to get the game status
 function getUpdatedDetails() {
-    $.getJSON('/battle/getBattleStatus/', {'playerId': playerId}, function(data){
+    $.getJSON('/battle/getBattleDetails/', {'playerId': playerId}, function(data){
        
         displayUpdatedDetails(data);
 
