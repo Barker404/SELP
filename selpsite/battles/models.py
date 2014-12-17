@@ -155,20 +155,20 @@ class Battle(models.Model):
         if (self.player1 is None):
             # Add opponent
             if (not self.player2 is None):
-                # Don't need to add to the other player
-                # Since saving one does this automatically
                 player.opponent = self.player2
                 player.save()
+                self.player2.opponent = player
+                self.player2.save()
             # Add to slot
             self.player1 = player
             self.save()
             return True
         elif(self.player2 is None):
             # Add opponent
-            # Don't need to add to the other player
-            # Since saving one does this automatically
             player.opponent = self.player1
             player.save()
+            self.player1.opponent = player
+            self.player1.save()
             # Add to slot
             self.player2 = player
             self.save()
