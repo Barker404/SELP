@@ -304,24 +304,18 @@ def calculateTurn(battle):
     if (battle.distance < Battle.SHORT):
         battle.distance = Battle.SHORT
 
-    print(battle.distance)
-
-    print("hi")
     # Calculate damage after
     damage1After = calculateDamage(battle.distance, move1.moveUsed)
     damage2After = calculateDamage(battle.distance, move2.moveUsed)
 
-    print("hi")
     # Players do damage to each other, not themselves!
     # So the hp being affected is the opposite of who did the damage
     player2.hp -= (damage1Before + damage1After)/2
     player1.hp -= (damage2Before + damage2After)/2
 
-    print("hi")
     player1.save()
     player2.save()
 
-    print("hi")
     if (player1.hp <= 0 or player2.hp <= 0):
         # Someone has died, battle is over
         battle.status = Battle.FINISHED
