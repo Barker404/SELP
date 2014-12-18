@@ -141,10 +141,24 @@ def ajaxGetBattleDetailsView(request):
     else:
         responseData['opponent'] = None
 
-    # Add the players' usernames
+    # Add the players' usernames and lastMove display values
     responseData['player']['username'] = player.user.username
+
+    if (not player.opponent.lastMove is None):
+        responseData['player']['lastMove'] = \
+            player.lastMove.get_moveUsed_display()
+    else:
+        responseData['player']['lastMove'] = None
+
     if (not player.opponent is None):
-        responseData['opponent']['username'] = player.opponent.user.username
+        responseData['opponent']['username'] = \
+            player.opponent.user.username
+
+        if (not player.opponent.lastMove is None):
+            responseData['opponent']['lastMove'] = \
+                player.opponent.lastMove.get_moveUsed_display()
+        else:
+            responseData['opponent']['lastMove'] = None
 
     # Finally, dump the full object
     serializedData = json.dumps(responseData)
