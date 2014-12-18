@@ -84,6 +84,8 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.battle1 = Battle.objects.first()
         self.move1 = Move.objects.all()[0] # player1 - MR
         self.move2 = Move.objects.all()[1] # player2 - LR
+        self.move3 = Move.objects.all()[2] # player1 - MC
+        self.move4 = Move.objects.all()[3] # player1 - MA
 
     def test_choose_move_bad_player(self):
         self.assertEqual(self.player3.move_set.count(), 0)
@@ -102,18 +104,18 @@ class BattlesViewsTestCase_Turns(TestCase):
 
     def test_choose_move_bad_choice(self):
         self.assertEqual(self.battle1.turnNumber, 1)
-        self.assertEqual(self.player1.move_set.count(), 1)
+        self.assertEqual(self.player1.move_set.count(), 3)
         success = chooseMove(self.player1, 'lol')
         self.assertFalse(success)
-        self.assertEqual(self.player1.move_set.count(), 1)
+        self.assertEqual(self.player1.move_set.count(), 3)
         self.assertEqual(self.battle1.turnNumber, 1)
 
     def test_choose_move_good(self):
         self.assertEqual(self.battle1.turnNumber, 1)
-        self.assertEqual(self.player1.move_set.count(), 1)
+        self.assertEqual(self.player1.move_set.count(), 3)
         success = chooseMove(self.player1, Move.SHORT_RANGE)
         self.assertTrue(success)
-        self.assertEqual(self.player1.move_set.count(), 2)
+        self.assertEqual(self.player1.move_set.count(), 4)
         
         move = self.player1.move_set.last()
         self.assertEqual(move.player, self.player1)
@@ -348,6 +350,67 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player2.user.profile.losses, 0)
         self.assertEqual(self.battle1.turnNumber, 1)
         self.assertEqual(self.battle1.distance, Battle.MEDIUM)
+
+    def test_calculate_turn_good_move_close(self):
+        self.player1.currentMove = self.move3
+        self.player1.save()
+        self.player2.currentMove = self.move2
+        self.player2.save()
+        self.battle1.status = Battle.CALCULATING
+        self.battle1.save()
+
+        self.calculate_turn_sanity()
+
+        success = calculateTurn(self.battle1)
+        self.assertTrue(success)
+
+        self.player1 = Player.objects.get(user=self.user1)
+        self.player2 = Player.objects.get(user=self.user2)
+        self.assertEqual(self.battle1.status, Battle.WAITING_FOR_CHOICE)
+        self.assertEqual(self.player1.currentMove, None)
+        self.assertEqual(self.player2.currentMove, None)
+        self.assertEqual(self.player1.lastMove, self.move3)
+        self.assertEqual(self.player2.lastMove, self.move2)
+        self.assertEqual(self.battle1.distance, Battle.SHORT)
+
+        self.assertEqual(self.player1.hp, 85)
+        self.assertEqual(self.player2.hp, 100)
+        self.assertEqual(self.player1.user.profile.wins, 0)
+        self.assertEqual(self.player1.user.profile.losses, 0)
+        self.assertEqual(self.player2.user.profile.wins, 0)
+        self.assertEqual(self.player2.user.profile.losses, 0)
+        self.assertEqual(self.battle1.turnNumber, 2)
+
+    def test_calculate_turn_good_move_away(self):
+        self.player1.currentMove = self.move4
+        self.player1.save()
+        self.player2.currentMove = self.move2
+        self.player2.save()
+        self.battle1.status = Battle.CALCULATING
+        self.battle1.save()
+
+        self.calculate_turn_sanity()
+
+        success = calculateTurn(self.battle1)
+        self.assertTrue(success)
+
+        self.player1 = Player.objects.get(user=self.user1)
+        self.player2 = Player.objects.get(user=self.user2)
+        self.assertEqual(self.battle1.status, Battle.WAITING_FOR_CHOICE)
+        self.assertEqual(self.player1.currentMove, None)
+        self.assertEqual(self.player2.currentMove, None)
+        self.assertEqual(self.player1.lastMove, self.move4)
+        self.assertEqual(self.player2.lastMove, self.move2)
+        self.assertEqual(self.battle1.distance, Battle.LONG)
+
+        self.assertEqual(self.player1.hp, 70)
+        self.assertEqual(self.player2.hp, 100)
+        self.assertEqual(self.player1.user.profile.wins, 0)
+        self.assertEqual(self.player1.user.profile.losses, 0)
+        self.assertEqual(self.player2.user.profile.wins, 0)
+        self.assertEqual(self.player2.user.profile.losses, 0)
+        self.assertEqual(self.battle1.turnNumber, 2)
+
 
     def calculate_turn_sanity(self):
         self.assertEqual(self.player1.hp, 100)
