@@ -135,22 +135,40 @@ function displayNewPageParts() {
 
 // This updates the battle details on the page
 function displayUpdatedDetails(data) {
+    // SHow the player's info
     if (data.player != null) {
-        $("#playerHp").text(data.player.fields.hp)
-        $("#playerName").text(data.player.username)
+        $("#playerHp").text(data.player.fields.hp);
+        $("#playerName").text(data.player.username);
         if (data.player.lastMove != null) {
-            $("#playerLastMove").text(data.player.lastMove)
+            $("#playerLastMove").text(data.player.lastMove);
         }
     }
+    // Show the opponent's info
     if (data.opponent != null) {
-        $("#opponentHp").text(data.opponent.fields.hp)
-        $("#opponentName").text(data.opponent.username)
+        $("#opponentHp").text(data.opponent.fields.hp);
+        $("#opponentName").text(data.opponent.username);
         if (data.opponent.lastMove != null) {
-            $("#opponentLastMove").text(data.opponent.lastMove)
+            $("#opponentLastMove").text(data.opponent.lastMove);
         }
     }
+    // Show general info
     if (data.battle != null) {
-        $("#turnNumber").text(data.battle.fields.turnNumber)
+        $("#turnNumber").text(data.battle.fields.turnNumber);
+        // Displays the winner by comparing the winner (a player pk)
+        // to both players' pks
+        if (data.battle.fields.winner == null) {
+            $("#winnerName").text("Nobody");
+        }
+        else if (data.battle.fields.winner == data.player.pk) {
+            $("#winnerName").text("You");
+        } 
+        else if (data.opponent != null &&
+                 data.battle.fields.winner == data.opponent.pk) {
+            $("#winnerName").text(data.opponent.username);
+        }
+        else {
+            $("#winnerName").text("I don't know who");
+        }
     }
 }
 
