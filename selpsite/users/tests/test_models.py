@@ -10,6 +10,7 @@ class UserModelsTestCase(TestCase):
     #     user1 = User.objects.create_user('user1', '', 'user1Pass')
     #     UserProfile.objects.get_or_create(description='user1\'s profile', user=user1)
 
+    # Tests method to calculate the player's score
     def testCalculateScore(self):
         profile = User.objects.get(username='lewis').profile
         self.assertEquals(profile.calculateScore(), 0)
@@ -34,6 +35,7 @@ class UserModelsTestCase(TestCase):
         self.assertEquals(profile.calculateScore(), 3.0/5.0)
 
 
+    # Tests method to add a win to a player profile
     def testAddWin(self):
         profile = User.objects.get(username='lewis').profile
         self.assertEquals(profile.score, 0)
@@ -50,6 +52,7 @@ class UserModelsTestCase(TestCase):
         self.assertEquals(profile.wins, 2)
         self.assertEquals(profile.losses, 0)
 
+    # Tests method to add a loss to a player profile
     def testAddLoss(self):
         profile = User.objects.get(username='lewis').profile
         self.assertEquals(profile.score, 0)
@@ -66,6 +69,7 @@ class UserModelsTestCase(TestCase):
         self.assertEquals(profile.wins, 0)
         self.assertEquals(profile.losses, 2)
 
+    # Tests score field of a player's profile
     def testScore(self):
         profile = User.objects.get(username='lewis').profile
         self.assertEquals(profile.score, 0)
