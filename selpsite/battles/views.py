@@ -144,11 +144,12 @@ def ajaxGetBattleDetailsView(request):
     # Add the players' usernames and lastMove display values
     responseData['player']['username'] = player.user.username
 
-    if (not player.opponent.lastMove is None):
+    if (not player.lastMove is None):
         responseData['player']['lastMove'] = \
             player.lastMove.get_moveUsed_display()
     else:
         responseData['player']['lastMove'] = None
+
 
     if (not player.opponent is None):
         responseData['opponent']['username'] = \
