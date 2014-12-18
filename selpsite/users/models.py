@@ -17,7 +17,7 @@ class UserProfile(models.Model):
         if (self.losses == 0):
             return self.wins
         else:
-            return self.wins/self.losses
+            return float(self.wins)/float(self.losses)
 
     def addWin(self):
         self.wins = self.wins + 1
