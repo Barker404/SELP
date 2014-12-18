@@ -4,14 +4,18 @@ from django.http import (
                         HttpResponseBadRequest, 
                         HttpResponseForbidden
                         )
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from models import Battle, Player, Move
 from django.core import serializers
 
 # View for displaying the start battle page
 def battleView(request):
-    return render(request, 'battles/startBattle.html')
+    # Redirect to login page if user is not logged in
+    if not request.user.is_authenticated():
+        return redirect('/users/login/?next=%s' % request.path)
+    else:
+        return render(request, 'battles/startBattle.html')
 
 # View for creating a player object in preparation for starting a 
 # battle
