@@ -15,7 +15,7 @@ def battleView(request):
     if not request.user.is_authenticated():
         return redirect('/users/login/?next=%s' % request.path)
     else:
-        return render(request, 'battles/startBattle.html')
+        return render(request, 'battles/battle.html')
 
 # View for creating a player object in preparation for starting a 
 # battle
