@@ -29,6 +29,11 @@ class UserModelsTestCase(TestCase):
         profile.losses = 100
         self.assertEquals(profile.calculateScore(), 10/100)
 
+        profile.wins = 3
+        profile.losses = 5
+        self.assertEquals(profile.calculateScore(), 3.0/5.0)
+
+
     def testAddWin(self):
         profile = User.objects.get(username='lewis').profile
         self.assertEquals(profile.score, 0)
