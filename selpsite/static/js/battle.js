@@ -138,10 +138,16 @@ function displayUpdatedDetails(data) {
     if (data.player != null) {
         $("#playerHp").text(data.player.fields.hp)
         $("#playerName").text(data.player.username)
+        if (data.player.lastMove != null) {
+            $("#playerLastMove").text(data.player.lastMove)
+        }
     }
     if (data.opponent != null) {
         $("#opponentHp").text(data.opponent.fields.hp)
         $("#opponentName").text(data.opponent.username)
+        if (data.opponent.lastMove != null) {
+            $("#opponentLastMove").text(data.opponent.lastMove)
+        }
     }
     if (data.battle != null) {
         $("#turnNumber").text(data.battle.fields.turnNumber)
