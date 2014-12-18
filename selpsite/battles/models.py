@@ -144,6 +144,17 @@ class Battle(models.Model):
                                    default=None)
     # Includes the current turn
     turnNumber = models.IntegerField(default=1)
+    # The "distance" between player changes how much damage moves do
+    SHORT = 1
+    MEDIUM = 2
+    LONG = 3
+    DISTANCES = (
+        (SHORT, 'Short'),
+        (MEDIUM, 'Medium'),
+        (LONG, 'Long')
+    )
+    distance = models.IntegerField(choices=DISTANCES,
+                                   default=MEDIUM)
     # Will be null during the game
     winner = models.ForeignKey(Player, 
                                related_name='winner', 
