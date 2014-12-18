@@ -118,7 +118,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         move = self.player1.move_set.first()
         self.assertEqual(move.player, self.player1)
         self.assertEqual(move.moveNo, 1)
-        self.assertEqual(move.moveUsed, Move.ROCK)
+        self.assertEqual(move.moveUsed, Move.ROCK) 
 
     def test_calculate_turn_bad_player1_none(self):
         self.player1.currentMove = self.move1
@@ -242,6 +242,8 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.battle1.status, Battle.WAITING_FOR_CHOICE)
         self.assertEqual(self.player1.currentMove, None)
         self.assertEqual(self.player2.currentMove, None)
+        self.assertEqual(self.player1.lastMove, self.move1)
+        self.assertEqual(self.player2.lastMove, self.move2)
 
         self.assertEqual(self.player1.hp, 70)
         self.assertEqual(self.player2.hp, 100)
@@ -333,6 +335,8 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player2.user.profile.wins, 0)
         self.assertEqual(self.player2.user.profile.losses, 0)
         self.assertEqual(self.battle1.turnNumber, 1)
+        self.assertEqual(self.player1.lastMove, None)
+        self.assertEqual(self.player2.lastMove, None)
 
 class BattleAjaxViewsTestCase(TestCase):
     fixtures = ['auth_user_testdata',
