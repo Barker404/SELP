@@ -148,7 +148,6 @@ def ajaxGetBattleDetailsView(request):
 
     # Finally, dump the full object
     serializedData = json.dumps(responseData)
-    print(serializedData)
     return HttpResponse(serializedData, 
                         content_type="application/json")
 

@@ -148,7 +148,6 @@ class UsersViewsTestCase(TestCase):
         self.assertEqual(lewis.profile.score, 1)
         self.assertEqual(user1.profile.score, 2)
         newRankings = rankedUsers()
-        print(newRankings)
         self.assertEqual(newRankings[0], user1)
         self.assertEqual(newRankings[1], lewis)
 
