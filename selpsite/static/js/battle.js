@@ -137,9 +137,11 @@ function displayNewPageParts() {
 function displayUpdatedDetails(data) {
     if (data.player != null) {
         $("#playerHp").text(data.player.fields.hp)
+        $("#playerName").text(data.player.username)
     }
     if (data.opponent != null) {
         $("#opponentHp").text(data.opponent.fields.hp)
+        $("#opponentName").text(data.opponent.username)
     }
     if (data.battle != null) {
         $("#turnNumber").text(data.battle.fields.turnNumber)
