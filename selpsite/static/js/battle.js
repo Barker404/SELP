@@ -154,6 +154,23 @@ function displayUpdatedDetails(data) {
     // Show general info
     if (data.battle != null) {
         $("#turnNumber").text(data.battle.fields.turnNumber);
+        
+        // Translate distance into words
+        distance = data.battle.fields.distance;
+        if (distance == 1) {
+            distanceWords = "Short Range";
+        }
+        else if (distance == 2) {
+            distanceWords = "Mid Range";
+        }
+        else if (distance == 3) {
+            distanceWords = "Long Range";
+        }
+        else {
+            distanceWords = "Unknown Range";
+        }
+        $("#distance").text(distanceWords);
+
         // Displays the winner by comparing the winner (a player pk)
         // to both players' pks
         if (data.battle.fields.winner == null) {

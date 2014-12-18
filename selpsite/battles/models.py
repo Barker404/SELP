@@ -13,15 +13,19 @@ class Move(models.Model):
     # Potentially "move backwards", "move forwards" etc
     # May also have some concept of foreign key to 
     # "Possible Move"/"Attack" object
-    ROCK = 'R'
-    PAPER = 'P'
-    SCISSORS = 'S'
+    SHORT_RANGE = 'SR'
+    MID_RANGE = 'MR'
+    LONG_RANGE = 'LR'
+    MOVE_AWAY = 'MA'
+    MOVE_CLOSE = 'MC'
     MOVE_CHOICES = (
-        (ROCK, 'Rock'),
-        (PAPER, 'Paper'),
-        (SCISSORS, 'Scissors'),
+        (SHORT_RANGE, 'Short Range'),
+        (MID_RANGE, 'Mid Range'),
+        (LONG_RANGE, 'Long Range'),
+        (MOVE_AWAY, 'Move Away'),
+        (MOVE_CLOSE, 'Move Close'),
     )
-    moveUsed = models.CharField(max_length=1,
+    moveUsed = models.CharField(max_length=2,
                                  choices=MOVE_CHOICES)
     player = models.ForeignKey('Player')
     moveNo = models.IntegerField()
@@ -144,6 +148,17 @@ class Battle(models.Model):
                                    default=None)
     # Includes the current turn
     turnNumber = models.IntegerField(default=1)
+    # The "distance" between player changes how much damage moves do
+    SHORT = 1
+    MEDIUM = 2
+    LONG = 3
+    DISTANCES = (
+        (SHORT, 'Short'),
+        (MEDIUM, 'Medium'),
+        (LONG, 'Long')
+    )
+    distance = models.IntegerField(choices=DISTANCES,
+                                   default=MEDIUM)
     # Will be null during the game
     winner = models.ForeignKey(Player, 
                                related_name='winner', 

@@ -246,20 +246,27 @@ def chooseMove(player, move):
         success = calculateTurn(battle)
     return success
 
-# Defines how much damage is dealt to each party for a particular move 
-# combination
-# damages[p1Move][p2Move] = (p1damage, p2damage)
+# Defines how much damage is dealt by a move at a specific distance
+# The final damage will be the average of the damages at the distances 
+# before/after 
+
+# damages[distance][move] = damage
 damages = {
-    'R': { 'R': (00,00), 'P': (30,00), 'S': (00,30)},
-    'P': { 'R': (00,30), 'P': (00,00), 'S': (30,00)},
-    'S': { 'R': (30,00), 'P': (00,30), 'S': (00,00)}
+    Move.SHORT_RANGE : { 
+        Battle.SHORT : 50, Battle.MEDIUM : 00, Battle.LONG : 00 },
+    Move.MID_RANGE   : { 
+        Battle.SHORT : 20, Battle.MEDIUM : 30, Battle.LONG : 20 },
+    Move.LONG_RANGE  : { 
+        Battle.SHORT : 10, Battle.MEDIUM : 20, Battle.LONG : 40 }
 }
 
-def calculateDamage(move1, move2):
-    return damages[move1][move2]
+def calculateDamage(distance, move):
+    # Moving closer/further away does no damage
+    if (move == Move.MOVE_AWAY or move == Move.MOVE_CLOSE):
+        return 0
+    return damages[move][distance]
 
 def calculateTurn(battle):
-
     # Check battle is ready for calculating
     if (battle.player1 is None or 
         battle.player2 is None or
@@ -273,14 +280,38 @@ def calculateTurn(battle):
 
     move1 = player1.currentMove
     move2 = player2.currentMove
-    # Calculate damage - This will get more sophisticated when 
-    # battle system is expanded
+
+    # Calculate damage before
+    damage1Before = calculateDamage(battle.distance, move1.moveUsed)
+    damage2Before = calculateDamage(battle.distance, move2.moveUsed)
 
 
-    damage1, damage2 = calculateDamage(move1.moveUsed, move2.moveUsed)
+    # Change distance
+    if (battle.distance != Battle.LONG):
+        if (move1.moveUsed == Move.MOVE_AWAY):
+            battle.distance += 1
+        if (move2.moveUsed == Move.MOVE_AWAY):
+            battle.distance += 1
+    if (battle.distance != Battle.SHORT):
+        if (move1.moveUsed == Move.MOVE_CLOSE):
+            battle.distance -= 1
+        if (move2.moveUsed == Move.MOVE_CLOSE):
+            battle.distance -= 1
 
-    player1.hp -= damage1
-    player2.hp -= damage2
+    # Make sure distance doesn't exceed the limits
+    if (battle.distance > Battle.LONG):
+        battle.distance = Battle.LONG
+    if (battle.distance < Battle.SHORT):
+        battle.distance = Battle.SHORT
+
+    # Calculate damage after
+    damage1After = calculateDamage(battle.distance, move1.moveUsed)
+    damage2After = calculateDamage(battle.distance, move2.moveUsed)
+
+    # Players do damage to each other, not themselves!
+    # So the hp being affected is the opposite of who did the damage
+    player2.hp -= (damage1Before + damage1After)/2
+    player1.hp -= (damage2Before + damage2After)/2
 
     player1.save()
     player2.save()

@@ -36,11 +36,11 @@ class BattlesModelsTestCase(TestCase):
         battle = Battle.objects.create(player1=self.player1)
         
         self.assertEqual(Move.objects.count(), 0)
-        move = self.player1.addMove(Move.ROCK)
+        move = self.player1.addMove(Move.SHORT_RANGE)
 
         self.assertEqual(Move.objects.count(), 1)
         self.assertEqual(Move.objects.first(), move)
-        self.assertEqual(move.moveUsed, Move.ROCK)
+        self.assertEqual(move.moveUsed, Move.SHORT_RANGE)
         self.assertEqual(move.player, self.player1)
         self.assertEqual(move.moveNo, 1)
         self.assertEqual(self.player1.currentMove, move)
@@ -49,7 +49,7 @@ class BattlesModelsTestCase(TestCase):
     def test_add_move_no_batle(self):
         # Player is in no battle
         self.assertEqual(Move.objects.count(), 0)
-        move = self.player1.addMove(Move.ROCK)
+        move = self.player1.addMove(Move.SHORT_RANGE)
 
         self.assertIsNone(move)
         self.assertEqual(Move.objects.count(), 0)
