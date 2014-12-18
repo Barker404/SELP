@@ -152,4 +152,18 @@ class UsersViewsTestCase(TestCase):
         self.assertEqual(newRankings[0], user1)
         self.assertEqual(newRankings[1], lewis)
 
+    def test_user_details_view_special_characters(self):
+        userCount = User.objects.count()
+        profileCount = UserProfile.objects.count()
+
+        username = "-name.with@special+chars_"
+        password = "@pass.with+special!chars?"
+        user = User.objects.create(username=username, password=password)
+        profile = UserProfile.objects.create(user=user)
+
+        self.assertEqual(User.objects.count(), userCount + 1)
+        self.assertEqual(UserProfile.objects.count(), profileCount + 1)
+
+        response = self.client.get(reverse('userDetail', args=(username,)))
+        self.assertEqual(response.status_code, 200)
 
