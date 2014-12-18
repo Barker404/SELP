@@ -82,8 +82,8 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.player2 = Player.objects.get(user=self.user2)
         self.player3 = Player.objects.get(user=self.user3)
         self.battle1 = Battle.objects.first()
-        self.move1 = Move.objects.all()[0] # player1 - R
-        self.move2 = Move.objects.all()[1] # player2 - P
+        self.move1 = Move.objects.all()[0] # player1 - SR
+        self.move2 = Move.objects.all()[1] # player2 - MR
 
     def test_choose_move_bad_player(self):
         self.assertEqual(self.player3.move_set.count(), 0)
