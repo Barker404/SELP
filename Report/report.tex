@@ -24,13 +24,24 @@ There also exists a third section of the website - the "mechs list". This is a s
 
 \subsection{Technologies}
 
-As planned in my proposal, the application back-end is written in python using Django, which proved to be a good choice. As a relatively mature framework, I found the internet to be full of documentation, tutorials, and support even when combined with other technologies - making it easy to learn even without much experience. Additionally, due to it being quite heavyweight, it includes many useful feature that sped up the development process such as the included development server, test suite, and admin site. On the front-end I used JavaScript with jQuery, which I found to be very useful for simplifying actions which would normally be hard for someone new to the language to write. I also used jQuery to perform AJAX requests to my back-end, allowing for the game to update without refreshing the page.
+As planned in my proposal, the application back-end is written in python using Django, which proved to be a good choice. As a relatively mature framework, I found the internet to be full of documentation, tutorials, and support even when combined with other technologies - making it easy to learn even without much experience. Additionally, due to it being quite heavyweight, it includes many useful feature that sped up the development process such as the included development server, test suite, and admin site. It also provides a simple user authentication system, allowing me to use this already-written code and not have to worry about the security of it. On the front-end I used JavaScript with jQuery, which I found to be very useful for simplifying actions which would normally be hard for someone new to the language to write. I also used jQuery to perform AJAX requests to my back-end, allowing for the game to update without refreshing the page.
 
 \subsection{Code Structure}
 
 The back-end code is split between Django apps, each representing a separate functionality of the website. There are 4 of these: "battles", "home", "mechs" and "users". These refer to the 3 functionalities described above, in addition to a separate app for simply displaying the home page. Each of these apps have their own models, views, and templates, as is standard in Django. By splitting the website into these apps I was able to share functionality in relevant places to avoid repeating code, but could also focus on each individual part separately.
 
 The front-end consists of a single base HTML template, which is extended by the other specific templates, and a single CSS file. This keeps the look and feel of the site consistent on every page. I also kept all of my JavaScript simple enough to stay in a single file, as only the battle functionality uses it.
+
+\subsection{Adaptability}
+
+Throughout the development of my code, I was careful to make sure that it would be easy to adapt and change. Aside from general readability, such as writing comments so that others could understand the code, this involved separation of concerns, keeping small functions that could easily be changed to modify the behaviour. For example, the users are ranked by a "score" field on their database entry, which is calculated whenever wins or losses are added. However the calculation of this score is kept separate and so could easily be changed, perhaps to adjust the weighting of wins vs losses. Even if a new developer did not want to use this score field, the ranking view is shown using a \texttt{rankedUsers()} function, which returns the users ordered by score. However this could be altered in any way to allow the ranking to display something totally different. 
+
+Another example is in the battle app, when players have chosen their moves. When the server calculates the damage dealt to each player, it refers to separate function to do this, which could contain any formula desired if the battle system were to be expanded upon (for example if players had individual attack/defence stats). Additionally, this currently refers to an array of move matchups to get the damages (as a formula would overcomplicate it), which could be changed if a small change was to be made - for example an extra move added.
+
+On of the most useful places in which my application is adaptable is the front-end visuals. Due to the fact that the Django backend simply sends some variables to the template which can be inserted, it would be straightforward for another developer with a absic understanding of the Django template language to improve the HTML design. The CSS is also in a separate file, and so this could also be modified by another developer easily.
+
+The adaptability of the application in these ways is a great property if other developers need to change parts of it without understanding the whole system, or if there is a need or desire to add more features later.By doing this I have followed a basic good software engineering practice, as required by this practical.
+
 
 %The expected minimum features are:
 % A working web site.
