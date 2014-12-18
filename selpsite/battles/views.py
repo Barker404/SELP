@@ -241,6 +241,9 @@ damages = {
     'S': { 'R': (30,00), 'P': (00,30), 'S': (00,00)}
 }
 
+def calculateDamage(move1, move2):
+    return damages[move1][move2]
+
 def calculateTurn(battle):
 
     # Check battle is ready for calculating
@@ -260,7 +263,7 @@ def calculateTurn(battle):
     # battle system is expanded
 
 
-    damage1, damage2 = damages[move1.moveUsed][move2.moveUsed]
+    damage1, damage2 = calculateDamage(move1.moveUsed, move2.moveUsed)
 
     player1.hp -= damage1
     player2.hp -= damage2
