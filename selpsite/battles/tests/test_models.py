@@ -46,6 +46,15 @@ class BattlesModelsTestCase(TestCase):
         self.assertEqual(self.player1.currentMove, move)
         self.assertEqual(battle.lastMoveTime, move.time)
 
+    def test_add_move_no_batle(self):
+        # Player is in no battle
+        self.assertEqual(Move.objects.count(), 0)
+        move = self.player1.addMove(Move.ROCK)
+
+        self.assertIsNone(move)
+        self.assertEqual(Move.objects.count(), 0)
+        self.assertEqual(self.player1.currentMove, None)
+
     def test_try_add_player_only(self):
         battle = Battle.objects.create()
         success = battle.tryAddPlayer(self.player1)
