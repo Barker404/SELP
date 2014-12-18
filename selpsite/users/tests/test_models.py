@@ -23,11 +23,11 @@ class UserModelsTestCase(TestCase):
 
         profile.wins = 10000
         profile.losses = 1
-        self.assertEquals(profile.calculateScore(), 10000)
+        self.assertEquals(profile.calculateScore(), 10000.0/1.0)
 
         profile.wins = 10
         profile.losses = 100
-        self.assertEquals(profile.calculateScore(), 10/100)
+        self.assertEquals(profile.calculateScore(), 10.0/100.0)
 
         profile.wins = 3
         profile.losses = 5
@@ -79,6 +79,6 @@ class UserModelsTestCase(TestCase):
         profile.addLoss()
         self.assertEquals(profile.score, 1)
         profile.addLoss()
-        self.assertEquals(profile.score, 2/3)
+        self.assertEquals(profile.score, 2.0/3.0)
 
 
