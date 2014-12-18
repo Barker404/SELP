@@ -24,7 +24,11 @@ There also exists a third section of the website - the "mechs list". This is a s
 
 \subsection{Technologies}
 
-As planned in my proposal, the application back-end is written in python using Django, which proved to be a good choice. As a relatively mature framework, I found the internet to be full of documentation, tutorials, and support even when combined with other technologies - making it easy to learn even without much experience. Additionally, due to it being quite heavyweight, it includes many useful feature that sped up the development process such as the included development server, test suite, and admin site. It also provides a simple user authentication system, allowing me to use this already-written code and not have to worry about the security of it. On the front-end I used JavaScript with jQuery, which I found to be very useful for simplifying actions which would normally be hard for someone new to the language to write. I also used jQuery to perform AJAX requests to my back-end, allowing for the game to update without refreshing the page.
+As planned in my proposal, the application back-end is written in python using Django, which proved to be a good choice. As a relatively mature framework, I found the internet to be full of documentation, tutorials, and support even when combined with other technologies - making it easy to learn even without much experience. Additionally, due to it being quite heavyweight, it includes many useful feature that sped up the development process such as the included development server, test suite, and admin site. It also provides a simple user authentication system, allowing me to use this already-written code and not have to worry about the security of it. 
+
+For my web server I simply used Django's built in development server, as this project is not intended for production. This made it much easier to set up and use. For my database I used SQLite, which is included with Django. While this is not as powerful or secure as a less lightweight database engine, it was easy to configure and required no extra installations, making it perfect for this development-only practical. I also used South for my database migrations, which allowed my to easily change the model structure without having to write my own migration queries, which could easily go wrong.
+
+On the front-end I used JavaScript with jQuery, which I found to be very useful for simplifying actions which would normally be hard for someone new to the language to write. I also used jQuery to perform AJAX requests to my back-end, allowing for the game to update without refreshing the page.
 
 \subsection{Code Structure}
 
@@ -47,6 +51,31 @@ The adaptability of the application in these ways is a great property if other d
 Being almost entirely new to web development, I had to spend more time than the average person might researching technologies and how to use them. Due to this and the fact that it is a relatively small assignment (compared to real software engineering projects) with limited time available, I had to prioritise much of my development. I therefore focused on the main requirements, and left some areas lacking in polish. These areas consist mainly of small changes and additions, but together they would take up a significant amount of time, which I instead used to get the game and rankings working. By effectively using my time in this way, I was able to create a working website fitting the minimum criteria even with little experience.
 
 Throughout the development I used source control, committing code whenever a significant change was made, and keeping logically separate changes in separate commits. This would allow me to undo an single change without affecting the rest of the program. I used a .gitignore file to keep binary files, virtualenv files, and the database out of the git repository. Additionally I used a .gitattributes file to keep the line endings consistent throughout the project, which was useful when working on both Linux and Windows machines. Overall I used good source control practices, another general good software engineering practice.
+
+\section{Testing}
+
+While developing my website, I created a large number of tests for each feature as I developed it. I created these using Django's automatic test suite, which simplified the process largely. I tested every view (on good and bad inputs), view subfunction, and model method. This not only allowed me to be more confident that the components were working, but also by keeping these tests I could immediately check that I had not broken any features while developing new ones by running them periodically. These checks would have taken a long time if I had chosen to write all of my tests at the end of the project.
+
+I did not use test-driven development, instead choosing to write tests after writing new features. While this may not be the best way to develop, I found it to be preferable due to the fact that I was relatively unfamiliar with both the framework and the test suite. Writing tests for new features that I did not yet fully understand the implementation of would be difficult, and would ultimately require me to "write" the new features in my head before writing any tests for them. Having had the experience of this practical however, I think that I could be capable now of developing Django in a test-driven way.
+
+I used the coverage.py tool to assist me in writing tests by showing test coverage. Although this metric is not great (as you cannot tell what the tests are actually doing on each line), it helps by flagging areas which have been completely untouched by tests, and may contain bugs. At the end of the practical, my test coverage was 98\% (as can be seen by running the test script).
+
+Throughout my project I used extensive testing, something which would only become more important if the size of the project grew. This is an important software engineering practice, and I think is worthy of a high mark in this practical.
+
+
+
+% Any deficiences in the implementation/design
+% Things you would do differently
+% Things you are especially proud of
+
+
+
+
+
+
+
+
+
 
 
 
