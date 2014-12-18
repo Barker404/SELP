@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from battles.models import Move, Player, Battle
-from battles.views import joinBattle, chooseMove, calculateTurn
+from battles.views import joinBattle, chooseMove, calculateTurn, calculateDamage
 
 class BattlesViewsTestCase_Views(TestCase):
     fixtures = ['auth_user_testdata']
@@ -82,8 +82,8 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.player2 = Player.objects.get(user=self.user2)
         self.player3 = Player.objects.get(user=self.user3)
         self.battle1 = Battle.objects.first()
-        self.move1 = Move.objects.all()[0] # player1 - SR
-        self.move2 = Move.objects.all()[1] # player2 - MR
+        self.move1 = Move.objects.all()[0] # player1 - MR
+        self.move2 = Move.objects.all()[1] # player2 - LR
 
     def test_choose_move_bad_player(self):
         self.assertEqual(self.player3.move_set.count(), 0)
@@ -115,10 +115,26 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertTrue(success)
         self.assertEqual(self.player1.move_set.count(), 2)
         
-        move = self.player1.move_set.first()
+        move = self.player1.move_set.last()
         self.assertEqual(move.player, self.player1)
         self.assertEqual(move.moveNo, 1)
         self.assertEqual(move.moveUsed, Move.SHORT_RANGE) 
+
+    def test_calculate_damage(self):
+        distance = Battle.MEDIUM
+        move = Move.MID_RANGE
+        damage = calculateDamage(distance, move)
+        self.assertEqual(damage, 30)
+
+        distance = Battle.LONG
+        move = Move.SHORT_RANGE
+        damage = calculateDamage(distance, move)
+        self.assertEqual(damage, 0)
+
+        distance = Battle.SHORT
+        move = Move.MOVE_CLOSE
+        damage = calculateDamage(distance, move)
+        self.assertEqual(damage, 0)
 
     def test_calculate_turn_bad_player1_none(self):
         self.player1.currentMove = self.move1
@@ -244,14 +260,16 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player2.currentMove, None)
         self.assertEqual(self.player1.lastMove, self.move1)
         self.assertEqual(self.player2.lastMove, self.move2)
+        self.assertEqual(self.battle1.distance, Battle.MEDIUM)
 
-        self.assertEqual(self.player1.hp, 70)
-        self.assertEqual(self.player2.hp, 100)
+        self.assertEqual(self.player1.hp, 80)
+        self.assertEqual(self.player2.hp, 70)
         self.assertEqual(self.player1.user.profile.wins, 0)
         self.assertEqual(self.player1.user.profile.losses, 0)
         self.assertEqual(self.player2.user.profile.wins, 0)
         self.assertEqual(self.player2.user.profile.losses, 0)
         self.assertEqual(self.battle1.turnNumber, 2)
+        self.assertEqual(self.battle1.distance, Battle.MEDIUM)
 
     def test_calculate_turn_p1_wins(self):
         self.player1.currentMove = self.move1
@@ -271,6 +289,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player2.user.profile.wins, 0)
         self.assertEqual(self.player2.user.profile.losses, 0)
         self.assertEqual(self.battle1.turnNumber, 1)
+        self.assertEqual(self.battle1.distance, Battle.MEDIUM)
 
         success = calculateTurn(self.battle1)
         self.assertTrue(success)
@@ -283,13 +302,14 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player1.currentMove, self.move1)
         self.assertEqual(self.player2.currentMove, self.move2)
 
-        self.assertEqual(self.player1.hp, -10)
-        self.assertEqual(self.player2.hp, 100)
+        self.assertEqual(self.player1.hp, 0)
+        self.assertEqual(self.player2.hp, 70)
         self.assertEqual(self.player1.user.profile.wins, 0)
         self.assertEqual(self.player1.user.profile.losses, 1)
         self.assertEqual(self.player2.user.profile.wins, 1)
         self.assertEqual(self.player2.user.profile.losses, 0)
         self.assertEqual(self.battle1.turnNumber, 1)
+        self.assertEqual(self.battle1.distance, Battle.MEDIUM)
     
     def test_calculate_turn_p2_wins(self):
         self.player1.currentMove = self.move1
@@ -307,6 +327,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player2.user.profile.wins, 0)
         self.assertEqual(self.player2.user.profile.losses, 0)
         self.assertEqual(self.battle1.turnNumber, 1)
+        self.assertEqual(self.battle1.distance, Battle.MEDIUM)
 
         success = calculateTurn(self.battle1)
         self.assertTrue(success)
@@ -319,13 +340,14 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.player1.currentMove, self.move1)
         self.assertEqual(self.player2.currentMove, self.move2)
 
-        self.assertEqual(self.player1.hp, -10)
-        self.assertEqual(self.player2.hp, 100)
+        self.assertEqual(self.player1.hp, 0)
+        self.assertEqual(self.player2.hp, 70)
         self.assertEqual(self.player1.user.profile.wins, 0)
         self.assertEqual(self.player1.user.profile.losses, 1)
         self.assertEqual(self.player2.user.profile.wins, 1)
         self.assertEqual(self.player2.user.profile.losses, 0)
         self.assertEqual(self.battle1.turnNumber, 1)
+        self.assertEqual(self.battle1.distance, Battle.MEDIUM)
 
     def calculate_turn_sanity(self):
         self.assertEqual(self.player1.hp, 100)
@@ -337,6 +359,7 @@ class BattlesViewsTestCase_Turns(TestCase):
         self.assertEqual(self.battle1.turnNumber, 1)
         self.assertEqual(self.player1.lastMove, None)
         self.assertEqual(self.player2.lastMove, None)
+        self.assertEqual(self.battle1.distance, 2)
 
 class BattleAjaxViewsTestCase(TestCase):
     fixtures = ['auth_user_testdata',

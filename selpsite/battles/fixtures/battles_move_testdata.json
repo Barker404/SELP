@@ -3,7 +3,7 @@
     "pk": 1, 
     "model": "battles.move", 
     "fields": {
-        "moveUsed": "SR", 
+        "moveUsed": "MR", 
         "player": 2, 
         "moveNo": 1, 
         "time": "2014-12-15T06:52:28.050Z"
@@ -13,7 +13,7 @@
     "pk": 2, 
     "model": "battles.move", 
     "fields": {
-        "moveUsed": "MR", 
+        "moveUsed": "LR", 
         "player": 1, 
         "moveNo": 1, 
         "time": "2014-12-15T07:08:02.679Z"
