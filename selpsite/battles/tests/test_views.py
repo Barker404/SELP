@@ -7,10 +7,19 @@ from battles.models import Move, Player, Battle
 from battles.views import joinBattle, chooseMove, calculateTurn
 
 class BattlesViewsTestCase_Views(TestCase):
+    fixtures = ['auth_user_testdata']
 
-    def test_battle_view(self):
+    def test_battle_view_auth(self):
+        loggedIn = self.client.login(username='staff', password='staffPass')
+        self.assertTrue(loggedIn)
+
         response = self.client.get(reverse('battle'))
         self.assertEqual(response.status_code, 200)
+
+    def test_battle_view_unauth(self):
+        response = self.client.get(reverse('battle'))
+        self.assertRedirects(response, r'/users/login/?next=/battle/', 
+            status_code=302, target_status_code=200)
 
 
 class BattlesViewsTestCase_Join(TestCase):
