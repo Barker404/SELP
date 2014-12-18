@@ -14,7 +14,6 @@
         {% block navigation %}
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="{% url 'index' %}">Mech List</a></li>
             <li><a href="{% url 'battle' %}">Battle</a></li>
             <li><a href="{% url 'rankings' %}">Rankings</a></li>
             {% if user.is_authenticated %}
