@@ -295,6 +295,8 @@ def calculateTurn(battle):
             player2.user.profile.save()
     else:
         # Reset moves
+        player1.lastMove = player1.currentMove
+        player2.lastMove = player2.currentMove
         player1.currentMove = None
         player2.currentMove = None
         player1.save()

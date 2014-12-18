@@ -43,6 +43,10 @@ class Player(models.Model):
                                     related_name='currentMove', 
                                     null=True,
                                     default=None)
+    lastMove = models.ForeignKey(Move, 
+                                 related_name='lastMove', 
+                                 null=True,
+                                 default=None)
     opponent = models.OneToOneField('self',
                                     related_name='_opponent',
                                     null=True,
