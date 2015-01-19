@@ -1,1 +1,1 @@
-# Subit does not allow 0 length files
+# Submit does not allow 0 length files
